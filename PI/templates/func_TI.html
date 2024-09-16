@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<section class="container">
+  <h2>Funcionários TI</h2>
+  <a
+    href="{{ url_for('funcionarios_TI_bp.manage_funcionario_TI') }}"
+    class="btn btn-primary"
+    >Adicionar Funcionário</a
+  >
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Superintendente</th>
+        <th>Nome</th>
+        <th>Cargo</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for func_tecnologia in func_tecnologia %}
+      <tr>
+        <td>{{ func_tecnologia.ID }}</td>
+        <td>{{ func_tecnologia.superintendente.NomeSuperintendente }}</td>
+        <td>{{ func_tecnologia.Nome }}</td>
+        <td>{{ func_tecnologia.Cargo }}</td>
+        <td>{{ func_tecnologia.Email }}</td>
+        <td>
+          <a
+            href="{{ url_for('funcionarios_TI_bp.manage_funcionario_TI', id=func_tecnologia.ID) }}"
+            class="btn btn-warning"
+            >Editar</a
+          >
+          <form
+            action="{{ url_for('funcionarios_TI_bp.delete_funcionario_TI', id=func_tecnologia.ID) }}"
+            method="post"
+            style="display: inline-block"
+          >
+            <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="mt-4">Casos de Testes</h1>
+<!-- Caixa de seleção para filtrar por projeto -->
+<form method="GET" action="{{ url_for('index') }}" class="form-inline mb-3">
+    <label for="project_filter" class="mr-2">Filtrar por Projeto:</label>
+    <select name="project_id" id="project_filter" class="form-control mr-2">
+        <option value="" {% if not selected_project_id %}selected{% endif %}>Selecione um projeto</option>
+        {% for projeto in projetos %}
+        <option value="{{ projeto.id }}" {% if projeto.id == selected_project_id %}selected{% endif %}>
+            {{ projeto.nome_projeto }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+  
+<div class="d-flex justify-content-between mb-3">
+  <a href="{{ url_for('create') }}" class="btn btn-primary">Criar novo caso de teste</a>
+  
+  {% if selected_project_id %}
+  <button id="generateExcel" class="btn btn-success">Gerar Excel</button>
+  <script>
+    const project_id = "{{ selected_project_id }}";
+  </script>
+  {% endif %}
+  
+  <!-- Botão Limpar Filtros -->
+  <form id="clear-filters-form" method="get" action="{{ url_for('index') }}" class="d-inline">
+    <input type="hidden" name="clear_filters" value="true">
+    <button type="submit" class="btn btn-secondary" id="clear-filters-button">Limpar Filtros</button>
+  </form>
+
+</div>
+
+
+<div class="table-container">
+    <div class="scrolling-wrapper">
+<table  id="testCaseTable" class="table table-striped table-responsive">
+  <thead>
+    <tr>
+      <th>Actions</th>
+      <th>ID</th>
+      <th>Seq</th>
+      <th>Dependência</th>
+      <th>ID do Cenário</th>
+      <th>Módulo</th>
+      <th>Caso de Teste</th>
+      <th>Informações para o Teste</th>
+      <th>Passos</th>
+      <th>Resultado Esperado</th>
+      <th>Status</th>
+      <th>Responsável</th>
+      <th>Email do Responsável</th>
+      <th>Coordenador</th>
+      <th>Email do Coordenador</th>
+      <th>Data Início Planejada</th>
+      <th>Data Fim Planejada</th>
+      <th>Data Início Realizada</th>
+      <th>Data Fim Realizada</th>
+      <th>Observação</th>
+
+    </tr>
+    <tr>
+        <th></th>
+        <th><input type="text" id="filterID" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterSeq" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterDependencia" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterCenario" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterModulo" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterCasoTeste" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterInfoTeste" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterPassos" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterResultado" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterStatus" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterResponsavel" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterEmaildoResponsavel" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterCoordenador" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterEmaildoCoordenador" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterDataInícioPlanejada" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterDataFimPlanejada" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterDataInicioRealizada" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterDataFimRealizada" class="filter-input" placeholder="Filtrar"></th>
+        <th><input type="text" id="filterObservacao" class="filter-input" placeholder="Filtrar"></th>
+      </tr>
+  </thead>
+  <tbody>
+    {% if testcases %}
+    {% for testcase in testcases %}
+    <tr>
+        <td>
+              <div class="btn-group" role="group">
+                <a href="{{ url_for('update', id=testcase.id, project_id=request.args.get('project_id'), filterID=request.args.get('filterID'), filterSeq=request.args.get('filterSeq'), filterDependencia=request.args.get('filterDependencia'), filterCenario=request.args.get('filterCenario'), filterModulo=request.args.get('filterModulo'), filterCasoTeste=request.args.get('filterCasoTeste'), filterInfoTeste=request.args.get('filterInfoTeste'), filterPassos=request.args.get('filterPassos'), filterResultado=request.args.get('filterResultado'), filterStatus=request.args.get('filterStatus'), filterResponsavel=request.args.get('filterResponsavel'), filterEmaildoResponsavel=request.args.get('filterEmaildoResponsavel'), filterCoordenador=request.args.get('filterCoordenador'), filterEmaildoCoordenador=request.args.get('filterEmaildoCoordenador'), filterDataInicioPlanejada=request.args.get('filterDataInicioPlanejada'), filterDataFimPlanejada=request.args.get('filterDataFimPlanejada'), filterDataInicioRealizada=request.args.get('filterDataInicioRealizada'), filterDataFimRealizada=request.args.get('filterDataFimRealizada'), filterObservacao=request.args.get('filterObservacao')) }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{{ url_for('delete', id=testcase.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+          </td>
+      <td>{{ testcase.id }}</td>
+      <td>{{ testcase.seq }}</td>
+      <td>{{ testcase.dependencia }}</td>
+      <td>{{ testcase.id_cenario }}</td>
+      <td>{{ testcase.modulo }}</td>
+      <td>{{ testcase.caso_teste }}</td>
+      <td>{{ testcase.info_teste }}</td>
+      <td>{{ testcase.passos }}</td>
+      <td>{{ testcase.resultado_esperado }}</td>
+      <td>{{ testcase.status }}</td>
+      <td>{{ funcionarios[testcase.id_responsavel].nome if testcase.id_responsavel in funcionarios else 'N/A' }}</td>
+      <td>{{ funcionarios[testcase.id_responsavel].email if testcase.id_responsavel in funcionarios else 'N/A' }}</td>
+      <td>{{ funcionarios[testcase.id_coordenador].nome if testcase.id_coordenador in funcionarios else 'N/A' }}</td>
+      <td>{{ funcionarios[testcase.id_coordenador].email if testcase.id_coordenador in funcionarios else 'N/A' }}</td>
+        <td>
+        {{ testcase.data_inicio_planejada.strftime('%d-%m-%Y') if
+        testcase.data_inicio_planejada else '' }}
+      </td>
+      <td>
+        {{ testcase.data_fim_planejada.strftime('%d-%m-%Y') if
+        testcase.data_fim_planejada else '' }}
+      </td>
+      <td>
+        {{ testcase.data_inicio_realizada.strftime('%d-%m-%Y') if
+        testcase.data_inicio_realizada else '' }}
+      </td>
+      <td>
+        {{ testcase.data_fim_realizada.strftime('%d-%m-%Y') if
+        testcase.data_fim_realizada else '' }}
+      </td>
+      <td>{{ testcase.observacao }}</td>
+
+    </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="X">Nenhum caso de teste encontrado. Selecione um projeto.</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+</div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{% if action == 'add' %}Adicionar Nova Atividade{% elif action == 'edit' %}Editar Atividade{% else %}Lista de Atividades{% endif %}</h2>
+
+{% if action == 'list' %}
+
+<form method="GET" action="{{ url_for('activity_bp.listar_atividades') }}">
+    <label for="project_id">Selecione o Projeto:</label>
+    <select name="project_id" id="project_id" onchange="this.form.submit()">
+        <option value="">Todos os Projetos</option>
+        {% for project in projects %}
+            <option value="{{ project.id }}" {% if project.id == selected_project_id %}selected{% endif %}>{{ project.nome_projeto }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% for project in projects %}
+{% if not selected_project_id or project.id == selected_project_id %}
+{% if activities_by_project_phase_and_team[project.id] %}
+    <h3 class="project-title">Projeto: {{ project.nome_projeto }} (ID: {{ project.id }})</h3>
+    {% for phase, teams in activities_by_project_phase_and_team[project.id].items() %}
+    <h4 class="phase-title">Fase: {{ phase }}</h4>
+    {% for team, activities in teams.items() %}
+    <h5 class="team-title">Equipe: {{ team }}</h5>
+    <table class="project-table">
+        <tr>
+            <th>ID</th>
+            <th>Seq</th>
+            <th>Atividade</th>
+            <th>Responsável</th>
+            <th>Descrição</th>
+            <th>Data de Início</th>
+            <th>Hora de Início</th>
+            <th>Data de Término</th>
+            <th>Hora de Término</th>
+            <th>Observações</th>
+            <th>Ações</th>
+        </tr>
+        {% for activity in activities %}
+        <tr>
+            <td>{{ activity.id }}</td>
+            <td>{{ activity.seq }}</td>
+            <td>{{ activity.activity }}</td>
+            <td>{{ activity.responsible }}</td>
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.start_date }}</td>
+            <td>{{ activity.start_hour }}</td>
+            <td>{{ activity.end_date }}</td>
+            <td>{{ activity.end_hour }}</td>
+            <td>{{ activity.observations }}</td>
+            <td>
+                <a href="{{ url_for('activity_bp.edit_activity', id=activity.id) }}">Editar</a>
+                <form action="{{ url_for('activity_bp.delete_activity', id=activity.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Deletar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% else %}
+<form action="{% if action == 'add' %}{{ url_for('activity_bp.add_activity') }}{% else %}{{ url_for('activity_bp.edit_activity', id=activity.id) }}{% endif %}" method="post" class="activity-form">
+
+        <label for="project_search">Buscar Projeto:</label>
+        <input type="text" id="project_search" name="project_search" oninput="searchProjects()"><br>
+
+        <div class="form-group">
+        <label for="project_id">ID do Projeto:</label>
+    
+        <select id="project_id" name="project_id" required onchange="captureAndDisableProjectId()">
+            <option value="">Selecione um Projeto</option>
+            {% for project in projects %}
+            <option value="{{ project.id }}" {% if action == 'edit' and project.id == activity.project_id %}selected{% endif %}>{{ project.id }} - {{ project.nome_projeto }}</option>
+            {% endfor %}
+        </select><br>
+
+         <!-- <button type="button" id="change_project" onclick="changeProject()">Trocar Projeto</button><br> -->
+        <!-- Campo oculto para armazenar o valor do project_id -->
+        <input type="hidden" id="hidden_project_id" name="hidden_project_id">
+        </div>
+
+<div class="inline-elements">
+    <div>
+        {% if action == 'add' %}
+            <p>ID da Atividade: {{ next_id }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="seq">Sequência:</label>
+        <input type="number" id="seq" name="seq" value="{% if action == 'edit' %}{{ activity.seq }}{% else %}0{% endif %}" required><br>
+    </div>
+
+    <div class="form-group">
+        <label for="phase">Fase:</label>
+        <select id="phase" name="phase" required>
+            <option value="pre_go_live" {% if action == 'edit' and activity.phase == 'pre_go_live' %}selected{% endif %}>Pré Go Live</option>
+            <option value="go_live" {% if action == 'edit' and activity.phase == 'go_live' %}selected{% endif %}>Go Live</option>
+            <option value="post_go_live" {% if action == 'edit' and activity.phase == 'post_go_live' %}selected{% endif %}>Pós Go Live</option>
+        </select><br>
+    </div>
+
+    <div class="form-group">      
+        <label for="equipe">Equipe:</label>
+        <select id="equipe" name="equipe" required>
+            <option value="negocio" {% if action == 'edit' and activity.equipe == 'negocio' %}selected{% endif %}>Negócio</option>
+            <option value="ti" {% if action == 'edit' and activity.equipe == 'ti' %}selected{% endif %}>TI</option>
+        </select><br>
+    </div>
+</div>
+    <div class="form-group">
+        <label for="activity">Atividade:</label>
+        <input type="text" id="activity" name="activity" value="{% if action == 'edit' %}{{ activity.activity }}{% endif %}" required><br>
+    </div>
+
+    <div class="form-group">
+        <label for="responsible">Responsável:</label>
+        <input type="text" id="responsible" name="responsible" value="{% if action == 'edit' %}{{ activity.responsible }}{% endif %}" required><br>
+    </div>
+
+    <div class="form-group">    
+        <label for="description">Descrição:</label>
+        <input type="text" id="description" name="description" value="{% if action == 'edit' %}{{ activity.description }}{% endif %}" required><br>
+    </div>
+
+<div class="inline-elements">
+    <div class="form-group">    
+        <label for="start_date">Data de Início:</label>
+        <input type="date" id="start_date" name="start_date" value="{% if action == 'edit' %}{{ activity.start_date.strftime('%Y-%m-%d') }}{% endif %}" required><br>
+    </div>
+
+    <div class="form-group">
+        <label for="start_hour">Hora de Início:</label>
+        <input type="time" id="start_hour" name="start_hour" value="{% if action == 'edit' and activity.start_hour %}{{ activity.start_hour.strftime('%H:%M') }}{% endif %}"><br>
+    </div>
+
+    <div class="form-group">
+        <label for="end_date">Data de Término:</label>
+        <input type="date" id="end_date" name="end_date" value="{% if action == 'edit' %}{{ activity.end_date.strftime('%Y-%m-%d') }}{% endif %}" required><br>
+    </div>
+
+    <div class="form-group">    
+        <label for="end_hour">Hora de Término:</label>
+        <input type="time" id="end_hour" name="end_hour" value="{% if action == 'edit' and activity.end_hour %}{{ activity.end_hour.strftime('%H:%M') }}{% endif %}"><br>
+    </div>
+    </div>
+    
+    <div class="form-group">    
+        <label for="observations">Observações:</label>
+        <input type="text" id="observations" name="observations" value="{% if action == 'edit' %}{{ activity.observations }}{% endif %}"><br>
+    </div>
+    
+        <input type="submit" class="submit-button" value="{% if action == 'add' %}Adicionar Atividade{% else %}Atualizar Atividade{% endif %}">
+</form>
+{% endif %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+{% endblock %}

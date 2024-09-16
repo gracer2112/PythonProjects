@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <h2>{% if funcionario.ID %}Editar{% else %}Adicionar{% endif %} Funcionário</h2>
+    <form action="{% if funcionario.ID %}{{ url_for('funcionarios_bp.manage_funcionario', id=funcionario.ID) }}{% else %}{{ url_for('funcionarios_bp.manage_funcionario') }}{% endif %}" method="post">
+        <label for="idSuperintendente">Superintendente</label>
+        <select id="idSuperintendente" name="idSuperintendente" class="superintendencias-select" required>
+            {% for superintendente in superintendentes %}
+            <option value="{{ superintendente.ID }}" {% if funcionario.IDSuperintendente == superintendente.ID %}selected{% endif %}>{{ superintendente.NomeSuperintendente }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="nomeFuncionario">Nome do Funcionário</label>
+        <input type="text" id="nomeFuncionario" name="nomeFuncionario" value="{{ funcionario.Nome }}" required>
+
+        <label for="cargoFuncionario">Cargo do Funcionário</label>
+        <input type="text" id="cargoFuncionario" name="cargoFuncionario" value="{{ funcionario.Cargo }}" required>
+
+        <label for="emailFuncionario">Email do Funcionário</label>
+        <input type="email" id="emailFuncionario" name="emailFuncionario" value="{{ funcionario.Email }}" required>
+
+        <button type="submit" class="btn btn-primary">{% if funcionario.ID %}Salvar{% else %}Cadastrar{% endif %} Funcionário</button>
+        <a href="{{ url_for('funcionarios_bp.list_funcionarios') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

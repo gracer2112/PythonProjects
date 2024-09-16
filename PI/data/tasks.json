@@ -1,0 +1,23 @@
+{
+    "pre_go_live": [
+        {"id": 1, "sequencia": 1, "atividade": "Planejamento do Projeto", "responsavel": "Gerente de Projeto", "descricao": "Definir escopo, cronograma, recursos e orçamento.", "data_inicio": "01/10/2023", "data_termino": "15/10/2023", "equipe": "Negócio"},
+        {"id": 2, "sequencia": 2, "atividade": "Reuniões de Alinhamento", "responsavel": "Equipe de Projeto", "descricao": "Reuniões regulares para garantir que todos os membros da equipe estejam alinhados com os objetivos do projeto.", "data_inicio": "01/10/2023", "data_termino": "15/10/2023", "equipe": "Negócio"},
+        {"id": 3, "sequencia": 3, "atividade": "Configuração de Ambiente", "responsavel": "Equipe de TI", "descricao": "Preparar servidores, redes e infraestrutura necessária para a implantação.", "data_inicio": "05/10/2023", "data_termino": "20/10/2023", "equipe": "TI"},
+        {"id": 4, "sequencia": 4, "atividade": "Treinamento de Usuários", "responsavel": "Equipe de Treinamento", "descricao": "Capacitar os usuários finais sobre o novo sistema ou processo.", "data_inicio": "10/10/2023", "data_termino": "25/10/2023", "equipe": "Negócio"},
+        {"id": 5, "sequencia": 5, "atividade": "Testes de Aceitação do Usuário (UAT)", "responsavel": "Equipe de QA", "descricao": "Realizar testes para garantir que o sistema atenda aos requisitos do usuário.", "data_inicio": "15/10/2023", "data_termino": "30/10/2023", "equipe": "TI"},
+        {"id": 6, "sequencia": 6, "atividade": "Revisão e Aprovação Final", "responsavel": "Stakeholders", "descricao": "Revisar e aprovar o sistema para implantação.", "data_inicio": "25/10/2023", "data_termino": "31/10/2023", "equipe": "Negócio"}
+    ],
+    "go_live": [
+        {"id": 7, "sequencia": 1, "atividade": "Comunicação de Go Live", "responsavel": "Gerente de Projeto", "descricao": "Notificar todas as partes interessadas sobre a data e hora de Go Live.", "data_inicio": "01/11/2023", "data_termino": "01/11/2023", "equipe": "Negócio"},
+        {"id": 8, "sequencia": 2, "atividade": "Migração de Dados", "responsavel": "Equipe de TI", "descricao": "Transferir dados do sistema antigo para o novo sistema.", "data_inicio": "01/11/2023", "data_termino": "02/11/2023", "equipe": "TI"},
+        {"id": 9, "sequencia": 3, "atividade": "Ativação do Sistema", "responsavel": "Equipe de TI", "descricao": "Colocar o novo sistema em operação.", "data_inicio": "02/11/2023", "data_termino": "02/11/2023", "equipe": "TI"},
+        {"id": 10, "sequencia": 4, "atividade": "Monitoramento Inicial", "responsavel": "Equipe de Suporte", "descricao": "Monitorar o sistema para identificar e resolver problemas iniciais.", "data_inicio": "02/11/2023", "data_termino": "05/11/2023", "equipe": "TI"}
+    ],
+    "post_go_live": [
+        {"id": 11, "sequencia": 1, "atividade": "Suporte Contínuo", "responsavel": "Equipe de Suporte", "descricao": "Fornecer suporte contínuo aos usuários finais.", "data_inicio": "05/11/2023", "data_termino": "30/11/2023", "equipe": "TI"},
+        {"id": 12, "sequencia": 2, "atividade": "Revisão Pós-Implementação", "responsavel": "Gerente de Projeto", "descricao": "Avaliar o sucesso da implantação e identificar áreas de melhoria.", "data_inicio": "10/11/2023", "data_termino": "15/11/2023", "equipe": "Negócio"},
+        {"id": 13, "sequencia": 3, "atividade": "Documentação Final", "responsavel": "Equipe de Documentação", "descricao": "Atualizar e finalizar toda a documentação do projeto.", "data_inicio": "15/11/2023", "data_termino": "20/11/2023", "equipe": "Negócio"},
+        {"id": 14, "sequencia": 4, "atividade": "Feedback dos Usuários", "responsavel": "Equipe de Projeto", "descricao": "Coletar feedback dos usuários finais para melhorias futuras.", "data_inicio": "20/11/2023", "data_termino": "25/11/2023", "equipe": "Negócio"},
+        {"id": 15, "sequencia": 5, "atividade": "Relatório Final do Projeto", "responsavel": "Gerente de Projeto", "descricao": "Preparar e apresentar o relatório final do projeto para as partes interessadas.", "data_inicio": "25/11/2023", "data_termino": "30/11/2023", "equipe": "Negócio"}
+    ]
+}

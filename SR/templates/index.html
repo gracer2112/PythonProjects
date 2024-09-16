@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Status Report</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Projetos</h2>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Pesquisar projetos..."
+      />
+      <a href="{{ url_for('main.create') }}" class="add-project-link"
+        >Adicionar Novo Projeto</a
+      >
+      <div class="columns">
+        <div class="column">
+          <h3>Backlog</h3>
+          <div class="project-grid">
+            {% for projeto in projetos %} {% if projeto.project_status ==
+            'Aguardando Início' or projeto.project_status == 'Em Estudo' %}
+            <div
+              class="project-card {{ 'blocked' if projeto.status_geral == 'Vermelho' else '' }}"
+              data-project-name="{{ projeto.nome_projeto }}"
+            >
+              <h3>{{ projeto.nome_projeto }}</h3>
+              <p>Data: {{ projeto.data_relatorio.strftime('%Y-%m-%d') }}</p>
+              <a
+                href="{{ url_for('main.view_report', projeto_id=projeto.id) }}"
+                class="view-link"
+                >Ver Relatório</a
+              >
+              <a
+                href="{{ url_for('main.update', projeto_id=projeto.id) }}"
+                class="update-link"
+                >Atualizar</a
+              >
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+        <div class="column">
+          <h3>Em andamento</h3>
+          <div class="project-grid">
+            {% for projeto in projetos %} {% if projeto.project_status ==
+            'Bloqueado' or projeto.project_status == 'Em Andamento' %}
+            <div
+              class="project-card {{ 'blocked' if projeto.status_geral == 'Vermelho' else '' }}"
+              data-project-name="{{ projeto.nome_projeto }}"
+            >
+              <h3>{{ projeto.nome_projeto }}</h3>
+              <p>Data: {{ projeto.data_relatorio.strftime('%Y-%m-%d') }}</p>
+              <a
+                href="{{ url_for('main.view_report', projeto_id=projeto.id) }}"
+                class="view-link"
+                >Ver Relatório</a
+              >
+              <a
+                href="{{ url_for('main.update', projeto_id=projeto.id) }}"
+                class="update-link"
+                >Atualizar</a
+              >
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+        <div class="column">
+          <h3>Pronto</h3>
+          <div class="project-grid">
+            {% for projeto in projetos %} {% if projeto.project_status ==
+            'Cancelado' or projeto.project_status == 'Concluido' or
+            projeto.project_status == 'Implantado' or projeto.project_status is
+            none %}
+            <div
+              class="project-card {{ 'blocked' if projeto.status_geral == 'Vermelho' else '' }}"
+              data-project-name="{{ projeto.nome_projeto }}"
+            >
+              <h3>{{ projeto.nome_projeto }}</h3>
+              <p>Data: {{ projeto.data_relatorio.strftime('%Y-%m-%d') }}</p>
+              <a
+                href="{{ url_for('main.view_report', projeto_id=projeto.id) }}"
+                class="view-link"
+                >Ver Relatório</a
+              >
+              <a
+                href="{{ url_for('main.update', projeto_id=projeto.id) }}"
+                class="update-link"
+                >Atualizar</a
+              >
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

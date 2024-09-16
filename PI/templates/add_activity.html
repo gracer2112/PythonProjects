@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Adicionar Nova Atividade</h2>
+<form action="{{ url_for('add_activity') }}" method="post">
+    <label for="project_search">Buscar Projeto:</label>
+    <input type="text" id="project_search" name="project_search" oninput="searchProjects()"><br>
+
+    <label for="project_id">ID do Projeto:</label>
+    <select id="project_id" name="project_id" required>
+        <!-- Opções serão preenchidas dinamicamente -->
+    </select><br>
+
+    <button type="button" id="change_project" onclick="changeProject()">Trocar Projeto</button><br>
+
+    <p>ID da Atividade: {{ next_id }}</p>
+
+    <label for="seq">Sequência:</label>
+    <input type="number" id="seq" name="seq" value="0" required><br>
+
+    <label for="phase">Fase:</label>
+    <select id="phase" name="phase" required>
+        <option value="pre_go_live">Pré Go Live</option>
+        <option value="go_live">Go Live</option>
+        <option value="post_go_live">Pós Go Live</option>
+    </select><br>
+
+    <label for="activity">Atividade:</label>
+    <input type="text" id="activity" name="activity" required><br>
+
+    <label for="responsible">Responsável:</label>
+    <input type="text" id="responsible" name="responsible" required><br>
+
+    <label for="description">Descrição:</label>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="start_date">Data de Início:</label>
+    <input type="date" id="start_date" name="start_date" required><br>
+
+    <label for="end_date">Data de Término:</label>
+    <input type="date" id="end_date" name="end_date" required><br>
+
+    <label for="start_hour">Hora de Início:</label>
+    <input type="time" id="start_hour" name="start_hour"><br>
+
+    <label for="end_hour">Hora de Término:</label>
+    <input type="time" id="end_hour" name="end_hour"><br>
+
+    <label for="equipe">Equipe:</label>
+    <select id="equipe" name="equipe" required>
+        <option value="negocio">Negócio</option>
+        <option value="ti">TI</option>
+    </select><br>
+
+    <label for="observations">Observações:</label>
+    <input type="text" id="observations" name="observations"><br>
+
+    <label for="project_search">Buscar Projeto:</label>
+    <input type="text" id="project_search" name="project_search" oninput="searchProjects()"><br>
+
+    <label for="project_id">ID do Projeto:</label>
+    <select id="project_id" name="project_id" required>
+        <!-- Opções serão preenchidas dinamicamente -->
+    </select><br>
+
+    <input type="submit" value="Adicionar Atividade">
+</form>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

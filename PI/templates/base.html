@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plano de Implantação</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Plano de Implantação</h1>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li>
+            <a href="{{ url_for('superintendentes_bp.list_superintendentes') }}"
+              >Superintendentes</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('funcionarios_bp.list_funcionarios') }}"
+              >Funcionários</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('funcionarios_TI_bp.list_funcionarios_TI') }}"
+              >Funcionários TI</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('project_bp.list_projects') }}"
+              >Listar Projetos</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('activity_bp.listar_atividades') }}"
+              >Listar Atividades</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('activity_bp.add_activity') }}"
+              >Adicionar Atividade</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  </body>
+</html>

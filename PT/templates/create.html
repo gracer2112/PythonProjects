@@ -1,0 +1,210 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="mt-4">Criar novo caso de teste</h1>
+<!-- Botão que abre o modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
+  Criar Caso de Teste por Upload
+</button>
+
+<!-- Modal para upload de casos de teste -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadModalLabel">Upload de Casos de Teste</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="uploadForm" action="{{ url_for('upload_test_cases') }}" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="projeto">Projeto:</label>
+            <select name="projeto" class="form-control" required>
+              {% for projeto in projetos %}
+              <option value="{{ projeto.id }}">{{ projeto.nome_projeto }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="file">Arquivo de Casos de Teste:</label>
+            <input type="file" name="file" accept=".xlsx" class="form-control-file" required />
+          </div>
+          <button type="submit" class="btn btn-secondary">Enviar</button>
+        </form>
+        <div id="progress" class="mt-3" style="display: none;">
+          <p>Processando...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulário Principal -->
+<form method="POST" class="needs-validation" novalidate>
+  <div class="form-group">
+    <label for="projeto">Projeto:</label>
+    <select name="projeto" class="form-control">
+      {% for projeto in projetos %}
+      <option value="{{ projeto.id }}" {% if projeto.id == selected_project_id %}selected{% endif %}>
+        {{ projeto.nome_projeto }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="seq">Seq:</label>
+      <input
+        type="number"
+        name="seq"
+        value="{{ next_seq }}"
+        class="form-control"
+        required
+        readonly
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="dependencia">Dependência:</label>
+      <input
+        type="number"
+        name="dependencia"
+        value="0"
+        class="form-control"
+        required
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="id_cenario">ID do Cenário:</label>
+      <input type="number" name="id_cenario" class="form-control" required />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="status">Status:</label>
+      <select name="status" class="form-control">
+        <option value="Aguardando Início">Aguardando Início</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="modulo">Módulo:</label>
+    <input type="text" name="modulo" class="form-control" required />
+  </div>
+
+  <div class="form-group">
+    <label for="caso_teste">Caso de Teste:</label>
+    <input type="text" name="caso_teste" class="form-control" required />
+  </div>
+  <div class="form-group">
+    <label for="info_teste">Informações para o Teste:</label>
+    <textarea name="info_teste" class="form-control" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="passos">Passos:</label>
+    <textarea name="passos" class="form-control" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="resultado_esperado">Resultado Esperado:</label>
+    <textarea
+      name="resultado_esperado"
+      class="form-control"
+      required
+    ></textarea>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="responsavel">Responsável:</label>
+      <select
+        name="responsavel"
+        class="form-control"
+        onchange="updateEmail('responsavel')"
+      >
+        {% for funcionario in funcionarios %}
+        <option
+          value="{{ funcionario.id }}"
+          data-email="{{ funcionario.email }}"
+        >
+          {{ funcionario.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="email_responsavel">Email do Responsável:</label>
+      <input
+        type="email"
+        name="email_responsavel"
+        class="form-control"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="coordenador">Coordenador:</label>
+      <select
+        name="coordenador"
+        class="form-control"
+        onchange="updateEmail('coordenador')"
+      >
+        {% for funcionario in funcionarios %}
+        <option
+          value="{{ funcionario.id }}"
+          data-email="{{ funcionario.email }}"
+        >
+          {{ funcionario.nome }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="email_coordenador">Email do Coordenador:</label>
+      <input
+        type="email"
+        name="email_coordenador"
+        class="form-control"
+        readonly
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="data_inicio_planejada">Data Início Planejada:</label>
+      <input
+        type="date"
+        name="data_inicio_planejada"
+        class="form-control"
+        required
+      />
+    </div>
+    <div class="form-group col-md-6">
+      <label for="data_fim_planejada">Data Fim Planejada:</label>
+      <input
+        type="date"
+        name="data_fim_planejada"
+        class="form-control"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="observacao">Observação:</label>
+    <textarea name="observacao" class="form-control"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Incluir</button>
+</form>
+
+{% endblock %} {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<ul class="flashes">
+  {% for category, message in messages %}
+  <li class="{{ category }}">{{ message }}</li>
+  {% endfor %}
+</ul>
+<script>
+  // Atrasar o redirecionamento por 3 segundos (3000 milissegundos)
+  setTimeout(function () {
+    window.location.href = "{{ url_for('index') }}";
+  }, 3000);
+</script>
+{% endif %} {% endwith %}

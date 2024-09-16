@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Pós Go Live</h2>
+
+<h3>Negócio</h3>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Seq</th>
+        <th>Atividade</th>
+        <th>Responsável</th>
+        <th>Descrição</th>
+        <th>Data Início</th>
+        <th>Hora Início</th>
+        <th>Data Término</th>
+        <th>Hora Término</th>
+        <th>Observações</th>
+    </tr>
+    {% for task in tasks %}
+        {% if task.equipe.lower() | replace("ç", "c") | replace("ã", "a") | replace("é", "e") | replace("ó", "o") == "negocio" %}
+        <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ loop.index }}</td>
+            <td>{{ task.activity }}</td>
+            <td>{{ task.responsible }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.start_date }}</td>
+            <td>{{ task.start_hour }}</td>
+            <td>{{ task.end_date }}</td>
+            <td>{{ task.end_hour }}</td>
+            <td>{{ task.observations }}</td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+<h3>TI</h3>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Seq</th>
+        <th>Atividade</th>
+        <th>Responsável</th>
+        <th>Descrição</th>
+        <th>Data Início</th>
+        <th>Hora Início</th>
+        <th>Data Término</th>
+        <th>Hora Término</th>
+        <th>Observações</th>
+    </tr>
+    {% for task in tasks %}
+        {% if task.equipe.lower() | replace("ç", "c") | replace("ã", "a") | replace("é", "e") | replace("ó", "o") == "ti" %}
+        <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ loop.index }}</td>
+            <td>{{ task.activity }}</td>
+            <td>{{ task.responsible }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.start_date }}</td>
+            <td>{{ task.start_hour }}</td>
+            <td>{{ task.end_date }}</td>
+            <td>{{ task.end_hour }}</td>
+            <td>{{ task.observations }}</td>
+        </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    {% endblock %}

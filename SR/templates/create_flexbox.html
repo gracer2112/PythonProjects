@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <!-- Incluir JS do Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <title>Status Report</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <!-- Incluir CSS do Select2 -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h2>Status Report</h2>
+
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+
+    <form action="{{ url_for('main.submit') }}" method="post">
+      <div class="flex-container">
+        <div class="section-title">Informações Gerais do Projeto</div>
+        <div class="flex-item">
+          <label for="nome_projeto">Nome do Projeto:</label>
+          <input type="text" id="nome_projeto" name="nome_projeto" required />
+        </div>
+        <div class="flex-item">
+          <label for="order_number">Número do Chamado:</label>
+          <input type="text" id="order_number" name="order_number" required />
+        </div>
+        <div class="flex-item">
+          <label for="data_relatorio">Data:</label>
+          <input
+            type="date"
+            id="data_relatorio"
+            name="data_relatorio"
+            required
+          />
+        </div>
+        <div class="flex-item">
+          <label for="gerente_projeto">Gerente do Projeto:</label>
+          <input
+            type="text"
+            id="gerente_projeto"
+            name="gerente_projeto"
+            required
+          />
+        </div>
+        <div class="flex-item">
+          <label for="equipe_envolvida">Equipe Envolvida:</label>
+          <input
+            type="text"
+            id="equipe_envolvida"
+            name="equipe_envolvida"
+            required
+          />
+        </div>
+
+        <div class="section-title">Resumo do Status</div>
+        <div class="flex-item">
+          <label for="status_geral">Status Geral:</label>
+          <select name="status_geral" id="status_geral" required>
+            <option value="Verde">Verde</option>
+            <option value="Amarelo">Amarelo</option>
+            <option value="Vermelho">Vermelho</option>
+          </select>
+        </div>
+        <div class="flex-item">
+          <label for="project_status">Estado do Projeto:</label>
+          <select name="project_status" id="project_status" required>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Bloqueado">Bloqueado</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Em Estudo">Em Estudo</option>
+            <option value="Implantado">Implantado</option>
+            <option value="Concluido">Concluido</option>
+            <option value="Aguardando Início">Aguardando Início</option>
+          </select>
+        </div>
+        <div class="flex-item">
+          <label for="resumo_status">Resumo:</label>
+          <textarea
+            id="resumo_status"
+            name="resumo_status"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="section-title">Progresso das Tarefas</div>
+        <div class="flex-item">
+          <table id="tasksTable">
+            <tr>
+              <th>Tarefa</th>
+              <th>Responsável</th>
+              <th>Status</th>
+              <th>Data de Início</th>
+              <th>Data de Término</th>
+              <th>Observações</th>
+            </tr>
+            <tr>
+              <td><input type="text" name="tarefas[]" required /></td>
+              <td><input type="text" name="responsaveis[]" required /></td>
+              <td>
+                <select name="status_tarefas[]" required>
+                  <option value="Concluída">Concluída</option>
+                  <option value="Replanejada">Replanejada</option>
+                  <option value="Planejada">Planejada</option>
+                  <option value="Em Andamento">Em Andamento</option>
+                  <option value="Prazo Vencido">Prazo Vencido</option>
+                  <option value="Em Replanejamento">Em Replanejamento</option>
+                </select>
+              </td>
+              <td><input type="date" name="datas_inicio[]" required /></td>
+              <td><input type="date" name="datas_termino[]" required /></td>
+              <td><input type="text" name="observacoes[]" required /></td>
+            </tr>
+          </table>
+          <button type="button" id="addTask">Adicionar Tarefa</button>
+        </div>
+
+        <div class="section-title">Principais Conquistas</div>
+        <div class="flex-item">
+          <label for="principais_conquistas">Principais Conquistas:</label>
+          <textarea
+            id="principais_conquistas"
+            name="principais_conquistas"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="section-title">Problemas e Riscos</div>
+        <div class="flex-item">
+          <table id="problemsTable">
+            <tr>
+              <th>Tipo</th>
+              <th>Problema/Risco</th>
+              <th>Impacto</th>
+              <th>Ação Corretiva</th>
+              <th>Agente de Solução</th>
+              <th>Data Alvo de Solução</th>
+              <th>Coordenador do Agente de Solução</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+            <tr>
+              <td>
+                <select name="tipos[]">
+                  <option value="Problema">Problema</option>
+                  <option value="Risco">Risco</option>
+                </select>
+              </td>
+              <td><input type="text" name="problemas[]" /></td>
+              <td><input type="text" name="impactos[]" /></td>
+              <td><input type="text" name="acoes_corretivas[]" /></td>
+              <td><input type="text" name="agentes_solucao[]" /></td>
+              <td><input type="date" name="datas_alvo_solucao[]" /></td>
+              <td>
+                <input type="text" name="coordenadores_agente_solucao[]" />
+              </td>
+              <td><input type="text" name="status_problemas[]" /></td>
+              <td>
+                <button type="button" onclick="removeProblem(this)">
+                  Remover
+                </button>
+              </td>
+            </tr>
+          </table>
+          <button type="button" id="addProblem">
+            Adicionar Problema/Risco
+          </button>
+        </div>
+
+        <div class="section-title">Próximos Passos</div>
+        <div class="flex-item">
+          <label for="proximos_passos">Próximos Passos:</label>
+          <textarea
+            id="proximos_passos"
+            name="proximos_passos"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="section-title">Solicitações e Dependências</div>
+        <div class="flex-item">
+          <label for="solicitacoes">Solicitações:</label>
+          <textarea
+            id="solicitacoes"
+            name="solicitacoes"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+        <div class="flex-item">
+          <label for="dependencias">Dependências:</label>
+          <textarea
+            id="dependencias"
+            name="dependencias"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="section-title">Notas Adicionais</div>
+        <div class="flex-item">
+          <label for="notas_adicionais">Notas Adicionais:</label>
+          <textarea
+            id="notas_adicionais"
+            name="notas_adicionais"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div class="section-title">Superintendências</div>
+        <div class="flex-item">
+          <label for="superintendencias">Superintendências:</label>
+          <select
+            id="superintendencias"
+            name="superintendencias[]"
+            multiple
+            required
+            class="select2 superintendencias-select"
+          >
+            {% for superintendencia in superintendencias %}
+            <option
+              value="{{ superintendencia.id }}"
+              {%
+              if
+              superintendencia.id
+              in
+              superintendencias_ids
+              %}selected{%
+              endif
+              %}
+            >
+              {{ superintendencia.superintendencia }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="section-title">Key Users</div>
+        <div class="flex-item">
+          <label for="key_users">Key Users:</label>
+          <select
+            id="key_users"
+            name="key_users[]"
+            multiple
+            required
+            class="select2 key-users-select"
+            onchange="atualizarSuperintendencia()"
+          >
+            {% for funcionario in funcionarios %}
+            <option
+              value="{{ funcionario.id }}"
+              {%
+              if
+              funcionario.id
+              in
+              key_users_ids
+              %}selected{%
+              endif
+              %}
+            >
+              {{ funcionario.nome }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="section-title">Funcionários de TI</div>
+        <div class="flex-item">
+          <label for="funcionarios_ti">Funcionários de TI:</label>
+          <select
+            id="funcionarios_ti"
+            name="funcionarios_ti[]"
+            multiple
+            required
+            class="select2 funcionarios-ti-select"
+          >
+            {% for funcionario_ti in funcionarios_ti %}
+            <option
+              value="{{ funcionario_ti.ID }}"
+              {%
+              if
+              funcionario_ti.ID
+              in
+              funcionarios_ti_ids
+              %}selected{%
+              endif
+              %}
+            >
+              {{ funcionario_ti.Nome }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit">Enviar</button>
+      </div>
+    </form>
+    <!-- Dados dos funcionários e superintendências -->
+    <script type="application/json" id="funcionarios-data">
+      {
+          {% for funcionario in funcionarios %}
+          "{{ funcionario.id }}": "{{ funcionario.superintendencia_id }}"{% if not loop.last %},{% endif %}
+          {% endfor %}
+      }
+    </script>
+  </body>
+</html>

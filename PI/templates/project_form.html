@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% block content %}
+<h1>Gerenciamento de Implantação</h1>
+
+{% if action == 'list' %}
+<h2>Lista de Projetos</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nome do Projeto</th>
+      <th>Data da Go Live</th>
+      <th>Versão do Documento</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in projects %}
+    <tr>
+      <td>{{ project.nome_projeto }}</td>
+      <td>{{ project.meeting_date }}</td>
+      <td>{{ project.document_version }}</td>
+      <td>
+        <a
+          href="{{ url_for('project_bp.edit_project', id=project.id) }}"
+          class="update-link"
+          >Editar</a
+        >
+        <form
+          action="{{ url_for('project_bp.delete_project', id=project.id) }}"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+        </form>
+        {% if project.activities.count() > 0 %}
+        <form
+          action="{{ url_for('project_bp.generate_excel', project_id=project.id) }}"
+          method="get"
+          style="display: inline"
+        >
+          <button type="submit">Gerar Excel</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% elif action == 'add' %}
+<h2>Adicionar Novo Projeto</h2>
+<!-- <form action="{{ url_for('project_bp.add_project') }}" method="post">
+  <div class="form-group">
+    <label for="nome_projeto">Nome do Projeto:</label>
+    <input
+      type="text"
+      id="nome_projeto"
+      name="nome_projeto"
+      class="form-control"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="meeting_date">Data da Reunião:</label>
+    <input
+      type="date"
+      id="meeting_date"
+      name="meeting_date"
+      class="form-control"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="document_version">Versão do Documento:</label>
+    <input
+      type="text"
+      id="document_version"
+      name="document_version"
+      class="form-control"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-success">Adicionar Projeto</button>
+</form> -->
+{% elif action == 'edit' %}
+<h2>Editar Projeto</h2>
+<form
+  action="{{ url_for('project_bp.edit_project', id=project.id) }}"
+  method="post"
+>
+  <div class="form-group">
+    <label for="nome_projeto">Nome do Projeto:</label>
+    <input
+      type="text"
+      id="nome_projeto"
+      name="nome_projeto"
+      class="form-control"
+      value="{{ project.nome_projeto }}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="meeting_date">Data da Reunião:</label>
+    <input
+      type="date"
+      id="meeting_date"
+      name="meeting_date"
+      class="form-control"
+      value="{{ project.meeting_date }}"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="document_version">Versão do Documento:</label>
+    <input
+      type="text"
+      id="document_version"
+      name="document_version"
+      class="form-control"
+      value="{{ project.document_version }}"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Atualizar Projeto</button>
+</form>
+{% endif %} {% endblock %}

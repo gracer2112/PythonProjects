@@ -1,0 +1,470 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #007a3d; /* Verde Escuro */
+  color: #ffffff; /* Branco */
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: #ffffff; /* Branco */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff; /* Branco */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  color: #0078c5; /* Azul Escuro */
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.project-title {
+  background-color: #007a3d; /* Verde Escuro */
+  color: #ffffff; /* Branco */
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.phase-title {
+  background-color: #555555; /* Cinza Escuro */
+  color: #ffffff; /* Branco */
+  padding: 8px;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.team-title {
+  background-color: #777777; /* Cinza Médio */
+  color: #ffffff; /* Branco */
+  padding: 6px;
+  border-radius: 8px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd; /* Cinza Médio */
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2; /* Cinza Claro */
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* Cinza Muito Claro */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* Cinza Claro */
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="time"],
+form select,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd; /* Cinza Médio */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form button {
+  background-color: #007a3d; /* Verde Escuro */
+  color: #ffffff; /* Branco */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+form button:hover {
+  background-color: #005f2d; /* Verde Escuro mais intenso */
+}
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #ffffff; /* Branco */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+footer {
+  background-color: #333333; /* Cinza Escuro */
+  color: #ffffff; /* Branco */
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+a {
+  color: #0078c5; /* Azul Escuro */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  background-color: #dc3545; /* Vermelho */
+  color: #ffffff; /* Branco */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c82333; /* Vermelho mais intenso */
+}
+
+/* Estilos adicionais do CSS existente */
+
+.info-projeto,
+.status-resumo,
+.solicitacoes-dependencias {
+  margin-bottom: 20px;
+}
+
+.line-spacing {
+  margin-bottom: 15px;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd; /* Cinza Médio */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.red {
+  background-color: #ffcccc; /* Vermelho Claro */
+}
+
+.yellow {
+  background-color: #ffffcc; /* Amarelo Claro */
+}
+
+.green {
+  background-color: #ccffcc; /* Verde Claro */
+}
+
+.inline-elements {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.inline-elements label {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.inline-elements input[type="text"],
+.inline-elements select {
+  flex: 1;
+  min-width: 150px;
+}
+
+.project-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.project-list li {
+  margin-bottom: 10px;
+}
+
+.project-list a {
+  color: #0078c5; /* Azul Escuro */
+  text-decoration: none;
+}
+
+.project-list a:hover {
+  text-decoration: underline;
+}
+
+.project-list .update-link {
+  margin-left: 10px;
+  color: #0078c5; /* Azul Escuro */
+  text-decoration: none;
+}
+
+.project-list .update-link:hover {
+  text-decoration: underline;
+}
+
+.add-project-link {
+  display: block;
+  margin-top: 20px;
+  color: #0078c5; /* Azul Escuro */
+  text-decoration: none;
+}
+
+.add-project-link:hover {
+  text-decoration: underline;
+}
+
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.project-card {
+  background-color: #ffffff; /* Branco */
+  border: 1px solid #ddd; /* Cinza Médio */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.project-card h3 {
+  color: #0078c5; /* Azul Escuro */
+  margin-bottom: 10px;
+}
+
+.project-card p {
+  margin-bottom: 10px;
+}
+
+.project-card a {
+  display: block;
+  color: #0078c5; /* Azul Escuro */
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+.project-card a:hover {
+  text-decoration: underline;
+}
+
+.blocked {
+  background-color: #ffcccc; /* Vermelho Claro */
+}
+
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+.project-card.highlight {
+  border: 2px solid #007bff; /* Azul Escuro mais intenso */
+  background-color: #e9f5ff; /* Azul Claro */
+}
+
+.project-card.highlight h3 {
+  color: #007bff; /* Azul Escuro mais intenso */
+}
+
+.pdf-report {
+  font-size: 10px;
+}
+
+.pdf-report table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pdf-report th,
+.pdf-report td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: left;
+}
+
+.pdf-report .line-spacing {
+  margin-bottom: 5px;
+}
+
+.pdf-report .info-projeto,
+.pdf-report .status-resumo,
+.pdf-report .solicitacoes-dependencias {
+  page-break-inside: avoid;
+}
+
+select.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd; /* Cinza Médio */
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: auto;
+  min-height: 100px;
+}
+
+.superintendencias-select {
+  width: 300px;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+.key-users-select {
+  width: 300px;
+  height: 150px;
+  box-sizing: border-box;
+}
+
+.activity-form {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.submit-button {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color: #007a3d;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.submit-button:hover {
+  background-color: #005f2d;
+}
+
+.inline-elements {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.inline-elements p,
+.inline-elements .form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.inline-elements label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.inline-elements input,
+.inline-elements select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 1cm;
+}

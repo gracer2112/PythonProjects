@@ -1,0 +1,298 @@
+/* CSS existente */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  font-size: 14px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #007a3d;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+header img {
+  width: 150px;
+}
+
+header h1 {
+  color: white;
+}
+
+h2 {
+  color: #0078c5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #0078c5;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Classes para espaçamento adicional */
+.info-projeto,
+.status-resumo,
+.solicitacoes-dependencias {
+  margin-bottom: 20px;
+}
+
+/* Classe para aumentar o espaçamento entre linhas */
+.line-spacing {
+  margin-bottom: 15px;
+}
+
+/* Estilo para aumentar o tamanho dos campos de input */
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Estilos para as linhas da tabela conforme o status */
+.red {
+  background-color: #ffcccc;
+}
+
+.yellow {
+  background-color: #ffffcc;
+}
+
+.green {
+  background-color: #ccffcc;
+}
+
+/* Novos estilos para alinhar elementos na mesma linha */
+.inline-elements {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.inline-elements label {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.inline-elements input[type="text"],
+.inline-elements select {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* Estilos adicionais para a lista de projetos */
+.project-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.project-list li {
+  margin-bottom: 10px;
+}
+
+.project-list a {
+  color: #0078c5;
+  text-decoration: none;
+}
+
+.project-list a:hover {
+  text-decoration: underline;
+}
+
+.project-list .update-link {
+  margin-left: 10px;
+  color: #0078c5;
+  text-decoration: none;
+}
+
+.project-list .update-link:hover {
+  text-decoration: underline;
+}
+
+.add-project-link {
+  display: block;
+  margin-top: 20px;
+  color: #0078c5;
+  text-decoration: none;
+}
+
+.add-project-link:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para os cartões de projeto */
+.columns {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.project-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.project-card h3 {
+  color: #0078c5;
+  margin-bottom: 10px;
+}
+
+.project-card p {
+  margin-bottom: 10px;
+}
+
+.project-card a {
+  display: block;
+  color: #0078c5;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+.project-card a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo para projetos bloqueados */
+.blocked {
+  background-color: #ffcccc;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .columns {
+    flex-direction: column;
+  }
+}
+
+.project-card.highlight {
+  border: 2px solid #007bff;
+  background-color: #e9f5ff;
+}
+
+.project-card.highlight h3 {
+  color: #007bff; /* Escolha a cor que desejar */
+}
+
+/* Estilos específicos para PDF */
+.pdf-report {
+  font-size: 10px; /* Ajuste o tamanho da fonte conforme necessário */
+}
+
+.pdf-report table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pdf-report th,
+.pdf-report td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: left;
+}
+
+.pdf-report .line-spacing {
+  margin-bottom: 5px;
+}
+
+.pdf-report .info-projeto,
+.pdf-report .status-resumo,
+.pdf-report .solicitacoes-dependencias {
+  page-break-inside: avoid;
+}
+
+/* Novos estilos para os campos de seleção */
+select.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: auto; /* Ajusta a altura automaticamente */
+  min-height: 100px; /* Define uma altura mínima */
+}
+
+/* Estilo específico para o campo de seleção de superintendências */
+.superintendencias-select {
+  width: 300px; /* Define a largura desejada */
+  height: 150px; /* Define a altura desejada */
+  box-sizing: border-box; /* Inclui padding e borda na largura total */
+}
+
+/* Estilo específico para o campo de seleção de key users */
+.key-users-select {
+  width: 300px; /* Define a largura desejada */
+  height: 150px; /* Define a altura desejada */
+  box-sizing: border-box; /* Inclui padding e borda na largura total */
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.flex-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.flex-item label {
+  min-width: 150px;
+  font-weight: bold;
+}
+.flex-item input,
+.flex-item select,
+.flex-item textarea {
+  flex: 1;
+  min-width: 200px;
+}
+.section-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* Regra @page fora da classe */
+@page {
+  size: A4 landscape;
+  margin: 1cm;
+}

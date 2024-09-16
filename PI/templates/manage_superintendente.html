@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<section class="container">
+  <h2>
+    {% if superintendente.ID %}Editar{% else %}Adicionar{% endif %}
+    Superintendente
+  </h2>
+  <form
+    action="{% if superintendente.ID %}{{ url_for('superintendentes_bp.manage_superintendente', id=superintendente.ID) }}{% else %}{{ url_for('superintendentes_bp.manage_superintendente') }}{% endif %}"
+    method="post"
+  >
+    <label for="superintendencia">Superintendência</label>
+    <input
+      type="text"
+      id="superintendencia"
+      name="superintendencia"
+      value="{{ superintendente.Superintendencia }}"
+      required
+    />
+
+    <label for="nomeSuperintendente">Nome do Superintendente</label>
+    <input
+      type="text"
+      id="nomeSuperintendente"
+      name="nomeSuperintendente"
+      value="{{ superintendente.NomeSuperintendente }}"
+      required
+    />
+
+    <label for="emailSuperintendente">Email do Superintendente</label>
+    <input
+      type="email"
+      id="emailSuperintendente"
+      name="emailSuperintendente"
+      value="{{ superintendente.EmailSuperintendente }}"
+      required
+    />
+
+    <button type="submit" class="btn btn-primary">
+      {% if superintendente.ID %}Salvar{% else %}Cadastrar{% endif %}
+      Superintendente
+    </button>
+    <a
+      href="{{ url_for('superintendentes_bp.list_superintendentes') }}"
+      class="btn btn-secondary"
+      >Cancelar</a
+    >
+  </form>
+</section>
+{% endblock %}

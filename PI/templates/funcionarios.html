@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<section class="container">
+  <h2>Funcionários (Key Users)</h2>
+  <a
+    href="{{ url_for('funcionarios_bp.manage_funcionario') }}"
+    class="btn btn-primary"
+    >Adicionar Funcionário</a
+  >
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Superintendente</th>
+        <th>Nome</th>
+        <th>Cargo</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for funcionario in funcionarios %}
+      <tr>
+        <td>{{ funcionario.ID }}</td>
+        <td>{{ funcionario.superintendente.NomeSuperintendente }}</td>
+        <td>{{ funcionario.Nome }}</td>
+        <td>{{ funcionario.Cargo }}</td>
+        <td>{{ funcionario.Email }}</td>
+        <td>
+          <a
+            href="{{ url_for('funcionarios_bp.manage_funcionario', id=funcionario.ID) }}"
+            class="btn btn-warning"
+            >Editar</a
+          >
+          <form
+            action="{{ url_for('funcionarios_bp.delete_funcionario', id=funcionario.ID) }}"
+            method="post"
+            style="display: inline-block"
+          >
+            <button type="submit" class="btn btn-danger">Excluir</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

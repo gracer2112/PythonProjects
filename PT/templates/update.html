@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mt-4">Atualizar caso de teste</h1>
+<div class="form-group">
+
+<form method="POST" class="needs-validation" novalidate action="{{ url_for('update', id=testcase.id, **request.args) }}">
+    <div class="form-group">
+        <label for="projeto">Projeto:</label>
+        <p class="form-control-plaintext">{{ testcase.projeto.nome_projeto }} (Código: {{ testcase.id_projeto }})</p>
+    </div>
+</div>
+
+
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="seq">Seq:</label>
+            <input type="number" name="seq" value="{{ testcase.seq }}" class="form-control" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="dependencia">Dependência:</label>
+            <input type="number" name="dependencia" value="{{ testcase.dependencia }}" class="form-control" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="id_cenario">ID do Cenário:</label>
+            <input type="number" name="id_cenario" value="{{ testcase.id_cenario }}" class="form-control" required>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="status">Status:</label>
+            <select name="status" class="form-control">
+                <option value="Erro" {% if testcase.status == 'Erro' %}selected{% endif %}>Erro</option>
+                <option value="Aguardando Inicio" {% if testcase.status == 'Aguardando Inicio' %}selected{% endif %}>Aguardando Início</option>
+                <option value="Concluída" {% if testcase.status == 'Concluída' %}selected{% endif %}>Concluída</option>
+                <option value="Bloqueada" {% if testcase.status == 'Bloqueada' %}selected{% endif %}>Bloqueada</option>
+                <option value="Em Andamento" {% if testcase.status == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                <option value="Reteste" {% if testcase.status == 'Reteste' %}selected{% endif %}>Reteste</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">    
+            <label for="modulo">Módulo:</label>
+            <input type="text" name="modulo" value="{{ testcase.modulo }}" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="caso_teste">Caso de Teste:</label>
+        <input type="text" name="caso_teste" value="{{ testcase.caso_teste }}" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="info_teste">Informações para o Teste:</label>
+        <textarea name="info_teste" class="form-control" required>{{ testcase.info_teste }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="passos">Passos:</label>
+        <textarea name="passos" class="form-control" required>{{ testcase.passos }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="resultado_esperado">Resultado Esperado:</label>
+        <textarea name="resultado_esperado" class="form-control" required>{{ testcase.resultado_esperado }}</textarea>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="responsavel">Responsável:</label>
+            <select name="responsavel" class="form-control select2" onchange="updateEmail('responsavel')"
+            >
+                {% for funcionario in funcionarios %}
+                <option value="{{ funcionario.id }}" data-email="{{ funcionario.email }}" {% if funcionario.id == testcase.id_responsavel %}selected{% endif %}>
+                    {{ funcionario.nome }}    
+                </option>       
+                     {% endfor %}
+            </select>
+    </div>
+        <div class="form-group col-md-6">
+            <label for="email_responsavel">Email do Responsável:</label>
+            <input type="email" name="email_responsavel" class="form-control" readonly value="{{ funcionarios[testcase.id_responsavel].email if testcase.id_responsavel in funcionarios else '' }}" />
+    </div></div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="coordenador">Coordenador:</label>
+            <select name="coordenador" class="form-control select2"  onchange="updateEmail('coordenador')">
+                {% for funcionario in funcionarios %}
+                <option value="{{ funcionario.id }}" data-email="{{ funcionario.email }}" {% if funcionario.id == testcase.id_coordenador %}selected{% endif %}>
+                    {{ funcionario.nome }}
+                </option>
+                {% endfor %}
+            </select>
+    </div>
+
+        <div class="form-group col-md-6">
+            <label for="email_coordenador">Email do Coordenador:</label>
+            <input type="email" name="email_coordenador" class="form-control" readonly value="{{ funcionarios[testcase.id_coordenador].email if testcase.id_coordenador in funcionarios else '' }}" />
+        </div>        </div>
+
+        <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="data_inicio_planejada">Data Início Planejada:</label>
+            <input type="date" name="data_inicio_planejada" value="{{ testcase.data_inicio_planejada.strftime('%Y-%m-%d') if testcase.data_inicio_planejada else '' }}" class="form-control" required>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="data_fim_planejada">Data Fim Planejada:</label>
+            <input type="date" name="data_fim_planejada" value="{{ testcase.data_fim_planejada.strftime('%Y-%m-%d') if testcase.data_fim_planejada else '' }}" class="form-control" required>
+        </div></div>
+
+        <div class="form-row">
+
+        <div class="form-group col-md-6">
+            <label for="data_inicio_realizada">Data Início Realizada:</label>
+            <input type="date" name="data_inicio_realizada" value="{{ testcase.data_inicio_realizada.strftime('%Y-%m-%d') if testcase.data_inicio_realizada else '' }}" class="form-control" >
+        </div>
+        <div class="form-group col-md-6">
+        <label for="data_fim_realizada">Data Fim Realizada:</label>
+        <input type="date" name="data_fim_realizada" value="{{ testcase.data_fim_realizada.strftime('%Y-%m-%d') if testcase.data_fim_realizada else '' }}" class="form-control" >
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="observacao">Observação:</label>
+        <textarea name="observacao" class="form-control">{{ testcase.observacao }}</textarea>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+</form>
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %}
+    <ul class="flashes">
+      {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    <script>
+      // Atrasar o redirecionamento por 3 segundos (3000 milissegundos)
+      setTimeout(function () {
+        window.location.href = "{{ url_for('index') }}";
+      }, 3000);
+    </script>
+    {% endif %} {% endwith %}
+
+{% endblock %}

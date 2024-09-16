@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <h2>{% if func_tecnologia.ID %}Editar{% else %}Adicionar{% endif %} Funcionário TI</h2>
+    <form action="{% if func_tecnologia.ID %}{{ url_for('funcionarios_TI_bp.manage_funcionario_TI', id=func_tecnologia.ID) }}{% else %}{{ url_for('funcionarios_TI_bp.manage_funcionario_TI') }}{% endif %}" method="post">
+        <label for="idSuperintendente">Superintendente</label>
+        <select id="idSuperintendente" name="idSuperintendente" class="superintendencias-select" required>
+            {% for superintendente in superintendentes %}
+            <option value="{{ superintendente.ID }}" {% if func_tecnologia.IDSuperintendente == superintendente.ID %}selected{% endif %}>{{ superintendente.NomeSuperintendente }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="nomeFuncionario">Nome do Funcionário</label>
+        <input type="text" id="nomeFuncionario" name="nomeFuncionario" value="{{ func_tecnologia.Nome }}" required>
+
+        <label for="cargoFuncionario">Cargo do Funcionário</label>
+        <input type="text" id="cargoFuncionario" name="cargoFuncionario" value="{{ func_tecnologia.Cargo }}" required>
+
+        <label for="emailFuncionario">Email do Funcionário</label>
+        <input type="email" id="emailFuncionario" name="emailFuncionario" value="{{ func_tecnologia.Email }}" required>
+
+        <button type="submit" class="btn btn-primary">{% if func_tecnologia.ID %}Salvar{% else %}Cadastrar{% endif %} Funcionário TI</button>
+        <a href="{{ url_for('funcionarios_TI_bp.list_funcionarios_TI') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Delete Test Case</h1>
+<p>Are you sure you want to delete this test case?</p>
+<form method="POST">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

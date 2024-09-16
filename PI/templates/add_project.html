@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Adicionar Novo Projeto</h2>
+<form action="{{ url_for('add_project') }}" method="post">
+    <label for="name">Nome do Projeto:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="meeting_date">Data da Reunião:</label>
+    <input type="date" id="meeting_date" name="meeting_date" required><br>
+
+    <label for="document_version">Versão do Documento:</label>
+    <input type="text" id="document_version" name="document_version" required><br>
+
+    <input type="submit" value="Adicionar Projeto">
+</form>
+{% endblock %}

@@ -1,0 +1,99 @@
+.table-container {
+  max-height: 500px; /* Defina uma altura máxima para o contêiner */
+  overflow-y: auto; /* Permite rolagem vertical */
+  overflow-x: hidden; /* Oculta a rolagem horizontal aqui */
+  position: relative;
+}
+
+.scrolling-wrapper {
+  overflow-x: auto; /* Permite rolagem horizontal */
+  white-space: nowrap;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.table th {
+  background-color: #006fb9;
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 10; /* Manter o cabeçalho acima das células */
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #edffdc;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin: 0;
+}
+
+.btn {
+  margin-right: 5px;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #000000;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+}
+
+.form-control {
+  font-size: 0.9rem;
+}
+
+#filterInput {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .table th,
+  .table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .table th {
+    position: sticky;
+    top: 0;
+    background-color: #006fb9;
+    z-index: 1;
+  }
+}

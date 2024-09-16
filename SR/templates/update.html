@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <!-- Incluir JS do Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <title>Atualizar Status Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Incluir CSS do Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <h2>Atualizar Status Report</h2>
+
+    <form action="{{ url_for('main.update', projeto_id=projeto.id) }}" method="post">
+        <table>
+            <tr>
+                <th>Seção</th>
+                <th>Detalhes</th>
+            </tr>
+            <tr>
+                <td>Informações Gerais do Projeto</td>
+                <td>
+                    <div class="info-projeto">
+                        <div class="line-spacing inline-elements">
+                            <label for="nome_projeto"><strong>Nome do Projeto:</strong></label>
+                            <input type="text" id="nome_projeto" name="nome_projeto" value="{{ projeto.nome_projeto }}" required>
+
+                            <label for="order_number"><strong>Número do Chamado:</strong></label>
+                            <input type="text" id="order_number" name="order_number" value="{{ projeto.order_number if projeto.order_number is not none else 0 }}" required>
+                        </div>
+                        <div class="line-spacing">
+                            <label for="data_relatorio"><strong>Data:</strong></label>
+                            <input type="date" id="data_relatorio" name="data_relatorio" value="{{ projeto.data_relatorio.strftime('%Y-%m-%d') }}" required>
+                        </div>
+                        <div class="line-spacing">
+                            <label for="gerente_projeto"><strong>Gerente do Projeto:</strong></label>
+                            <input type="text" id="gerente_projeto" name="gerente_projeto" value="{{ projeto.gerente_projeto }}" required>
+                        </div>
+                        <div class="line-spacing">
+                            <label for="equipe_envolvida"><strong>Equipe Envolvida:</strong></label>
+                            <input type="text" id="equipe_envolvida" name="equipe_envolvida" value="{{ projeto.equipe_envolvida }}" required>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Resumo do Status</td>
+                <td>
+                    <div class="status-resumo">
+                        <div class="line-spacing inline-elements">
+                            <label for="status_geral"><strong>Status Geral:</strong></label>
+                            <select name="status_geral" id="status_geral" required>
+                                <option value="Verde" {% if projeto.status_geral == 'Verde' %}selected{% endif %}>Verde</option>
+                                <option value="Amarelo" {% if projeto.status_geral == 'Amarelo' %}selected{% endif %}>Amarelo</option>
+                                <option value="Vermelho" {% if projeto.status_geral == 'Vermelho' %}selected{% endif %}>Vermelho</option>
+                            </select><br>
+
+                            <label for="estado_projeto"><strong>Estado do Projeto:</strong></label>
+                            <select name="estado_projeto" id="estado_projeto" required>
+                                <option value="Em Andamento" {% if projeto.project_status == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                                <option value="Bloqueado" {% if projeto.project_status == 'Bloqueado' or projeto.project_status is none %}selected{% endif %}>Bloqueado</option>
+                                <option value="Cancelado" {% if projeto.project_status == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                                <option value="Em Estudo" {% if projeto.project_status == 'Em Estudo' %}selected{% endif %}>Em Estudo</option>
+                                <option value="Concluido" {% if projeto.project_status == 'Concluido' %}selected{% endif %}>Concluído</option>
+                                <option value="Implantado" {% if projeto.project_status == 'Implantado' %}selected{% endif %}>Implantado</option>
+                                <option value="Aguardando Início" {% if projeto.project_status == 'Aguardando Início' %}selected{% endif %}>Aguardando Início</option>
+                            </select><br>
+                        </div>
+                        <div class="line-spacing">
+                            <label for="resumo_status"><strong>Resumo:</strong></label>
+                            <textarea id="resumo_status" name="resumo_status" rows="4" required>{{ projeto.resumo_status }}</textarea>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Progresso das Tarefas</td>
+                <td>
+                    <table id="tasksTable">
+                        <tr>
+                            <th>Tarefa</th>
+                            <th>Responsável</th>
+                            <th>Status</th>
+                            <th>Data de Início</th>
+                            <th>Data de Término</th>
+                            <th>Observações</th>
+                        </tr>
+                        {% for tarefa in tarefas %}
+                        <tr>
+                            <td><input type="text" name="tarefas[]" value="{{ tarefa.tarefa }}" required></td>
+                            <td><input type="text" name="responsaveis[]" value="{{ tarefa.responsavel }}" required></td>
+                            <td>
+                                <select name="status_tarefas[]" required>
+                                    <option value="Concluída" {% if tarefa.status == 'Concluída' %}selected{% endif %}>Concluída</option>
+                                    <option value="Replanejada" {% if tarefa.status == 'Replanejada' %}selected{% endif %}>Replanejada</option>
+                                    <option value="Planejada" {% if tarefa.status == 'Planejada' %}selected{% endif %}>Planejada</option>
+                                    <option value="Em Andamento" {% if tarefa.status == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                                    <option value="Prazo Vencido" {% if tarefa.status == 'Prazo Vencido' %}selected{% endif %}>Prazo Vencido</option>
+                                    <option value="Em Replanejamento" {% if tarefa.status == 'Em Replanejamento' %}selected{% endif %}>Em Replanejamento</option>
+                                </select>
+                            </td>
+                            <td><input type="date" name="datas_inicio[]" value="{{ tarefa.data_inicio.strftime('%Y-%m-%d') }}" required></td>
+                            <td><input type="date" name="datas_termino[]" value="{{ tarefa.data_termino.strftime('%Y-%m-%d') }}" required></td>
+                            <td><input type="text" name="observacoes[]" value="{{ tarefa.observacoes }}" required></td>
+                            <td><button type="button" onclick="removeTask(this)">Remover</button></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <button type="button" id="addTask">Adicionar Tarefa</button><br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>Principais Conquistas</td>
+                <td>
+                    <div class="line-spacing">
+                        <label for="principais_conquistas"><strong>Principais Conquistas:</strong></label>
+                        <textarea id="principais_conquistas" name="principais_conquistas" rows="4" required>{{ projeto.principais_conquistas }}</textarea>
+                    </div>          
+                </td>
+            </tr>
+            <tr>
+                <td>Problemas e Riscos</td>
+                <td>
+                    <table id="problemsTable">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Problema/Risco</th>
+                            <th>Impacto</th>
+                            <th>Ação Corretiva</th>
+                            <th>Agente de Solução</th>
+                            <th>Data Alvo de Solução</th>
+                            <th>Coordenador do Agente de Solução</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                        {% for problema in problemas %}
+                        <tr>
+                            <td>
+                                <select name="tipos[]">
+                                    <option value="Problema" {% if problema.tipo == 'Problema' %}selected{% endif %}>Problema</option>
+                                    <option value="Risco" {% if problema.tipo == 'Risco' %}selected{% endif %}>Risco</option>
+                                </select>
+                            </td>
+                            <td><input type="text" name="problemas[]" value="{{ problema.problema_risco }}"></td>
+                            <td><input type="text" name="impactos[]" value="{{ problema.impacto }}"></td>
+                            <td><input type="text" name="acoes_corretivas[]" value="{{ problema.acao_corretiva }}"></td>
+                            <td><input type="text" name="agentes_solucao[]" value="{{ problema.agente_solucao }}"></td>
+                            <td><input type="date" name="datas_alvo_solucao[]" value="{{ problema.data_alvo_solucao.strftime('%Y-%m-%d') }}"></td>
+                            <td><input type="text" name="coordenadores_agente_solucao[]" value="{{ problema.coordenador_agente_solucao }}"></td>
+                            <td><input type="text" name="status_problemas[]" value="{{ problema.status }}"></td>
+                            <td><button type="button" onclick="removeProblem(this)">Remover</button></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <button type="button" id="addProblem">Adicionar Problema/Risco</button><br><br>
+                </td>
+            </tr>
+            <tr>
+                <td>Próximos Passos</td>
+                <td>
+                    <div class="line-spacing">
+                        <label for="proximos_passos"><strong>Próximos Passos:</strong></label>
+                        <textarea id="proximos_passos" name="proximos_passos" rows="4" required>{{ projeto.proximos_passos }}</textarea>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Solicitações e Dependências</td>
+                <td>
+                    <div class="solicitacoes-dependencias">
+                        <div class="line-spacing">
+                            <label for="solicitacoes"><strong>Solicitações:</strong></label>
+                            <textarea id="solicitacoes" name="solicitacoes" rows="4" required>{{ projeto.solicitacoes }}</textarea>
+                        </div>
+                        <div class="line-spacing">
+                            <label for="dependencias"><strong>Dependências:</strong></label>
+                            <textarea id="dependencias" name="dependencias" rows="4" required>{{ projeto.dependencias }}</textarea>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Notas Adicionais</td>
+                <td>
+                    <div class="line-spacing">
+                        <label for="notas_adicionais"><strong>Notas Adicionais:</strong></label>
+                        <textarea id="notas_adicionais" name="notas_adicionais" rows="4" required>{{ projeto.notas_adicionais }}</textarea>
+                    </div>
+                </td>
+            </tr>
+            <!-- Adicionar Superintendências e Key Users -->
+            <tr>
+                <td>Superintendências</td>
+                <td>
+                    <div class="line-spacing">
+                        <label for="superintendencias"><strong>Superintendências:</strong></label>
+                        <select id="superintendencias" name="superintendencias[]" multiple class="select2 superintendencias-select">
+                            {% for superintendencia in superintendencias %}
+                            <option value="{{ superintendencia.id }}" {% if superintendencia.id in superintendencias_ids %}selected{% endif %}>
+                                {{ superintendencia.superintendencia }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Key Users</td>
+                <td>
+                    <div class="line-spacing">
+                        <label for="key_users"><strong>Key Users:</strong></label>
+                        <select id="key_users" name="key_users[]" multiple class="select2 key-users-select" onchange="atualizarSuperintendencia()">
+                            {% for funcionario in funcionarios %}
+                            <option value="{{ funcionario.id }}" {% if funcionario.id in key_users_ids %}selected{% endif %}>
+                                {{ funcionario.nome }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Funcionários de TI</td>
+                <td>
+                  <div class="line-spacing">
+                    <label for="funcionarios_ti"><strong>Funcionários de TI:</strong></label>
+                    <select
+                      id="funcionarios_ti"
+                      name="funcionarios_ti[]"
+                      multiple
+                      required
+                      class="select2 funcionarios-ti-select"
+                    >
+                      {% for funcionario_ti in funcionarios_ti %}
+                      <option
+                        value="{{ funcionario_ti.id }}"
+                        {%
+                        if
+                        funcionario_ti.id
+                        in
+                        funcionarios_ti_ids
+                        %}selected{%
+                        endif
+                        %}
+                      >
+                        {{ funcionario_ti.nome }}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+        </table>
+        <button type="submit">Atualizar</button>
+    </form>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Dados dos funcionários e superintendências -->
+    <script type="application/json" id="funcionarios-data">
+        {
+            {% for funcionario in funcionarios %}
+            "{{ funcionario.id }}": "{{ funcionario.idsuperintendente }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+        }
+    </script>
+</body>
+</html>
