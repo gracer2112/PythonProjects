@@ -10,8 +10,8 @@ from datetime import datetime
 import requests
 
 JIRA_INSTALLATION = "timetiintegrada.atlassian.net"
-E_MAIL = "erica.araujo@200DEV.com"
-API_TOKEN = "ATATT3xFfGF0WdtV-mGSZ0z7SJZ_yM8DNtosPQsFuNIjyGxADFyj9nRvibcKHRiOqNrhakh1deOhmZZs1ERJfSNBtNHEf6OipCgQ3gfjhi3rHechZmXyyDYmbIadLsHr-MaXFD-332AOBsjEGs48WwqXPtRXoIY5YHJCwhgVi4e5vLePtRqVnKA=3EEE6306"
+E_MAIL = "erica.araujo@integrada.coop.br"
+API_TOKEN = "ATATT3xFfGF0YdbDeAD5bm_Bh8zT2PgZbah-PPxVLRnS0Tp5ZKel0ZJ7S_vwIvJaoU7vAPcoLNjQFvsbp1ZK_0TCo_xzYYvpb87YhHItcseeZzxskelgk-8RfKgL_JVfOgw2y3ZUW55hEjTheU1dVqgM7MCtjV6l4X3sRYZuCX7XfxEGWujrfLA=E4C56923"
 
 HEADER = ['Report Date', 'Issue ID', 'Issue Type', 'Story Points', 'Sprint', 'Reliability Engineer Type', 'Executors Teams',
           'PagSeguro Teams', 'Insight Business Unit', 'Operational Categorization', 'Labels', 'Assignee',
@@ -22,7 +22,7 @@ ISSUE_TYPES = ['Backlog', 'Análise', 'Desenvolvimento', 'Code Review', 'Aguarda
 def main():
     # with open('jira.json', encoding='utf-8') as json_file:
     # issues_json = json.load(json_file)
-    issues_json = call_jira_api('10102', '1000', '0')
+    issues_json = call_jira_api('10111', '1000', '0')
 
     issues_total = issues_json['total']
     issues_retornados = issues_json['maxResults']
@@ -36,7 +36,7 @@ def main():
         page_num = page_num + 1
         if page_num > 1 :
             startat = str(issues_retornados * (page_num-1))
-            issues_json = call_jira_api('10102', '1000', startat)
+            issues_json = call_jira_api('10111', '1000', startat)
         issues = issues_json['issues']
         for issue in issues:
             row_dict = defaultdict(dict)
@@ -190,4 +190,4 @@ def get_headers(username, api_token):
 if __name__ == '__main__':
     main()
 
-# "https://jiraps.atlassian.net/rest/api/2/search?jql=filter=15249&maxResults=1000&expand=changelog&",
+# "https://timetiintegrada.atlassian.net/rest/api/2/search?jql=filter=10111&startAt=0&maxResults=1000&expand=changelog&",
