@@ -23,6 +23,7 @@ class EasySearch:
         self.password = data['password']
         self.startdate = data['startdate']
         self.enddate = data['enddate']
+        self.issue_file = data['issue_file']
         self.issue_details = []
         self.first_execution = True  # Flag para controlar a primeira execução
 
@@ -175,8 +176,8 @@ class EasySearch:
                 print(f'Dados salvos em chamados_details_page_{page}.xlsx')
 
         # Salva os dados restantes após a última página
-        df.to_excel('chamados_details_final.xlsx', index=False)
-        print('Dados salvos em chamados_details_final.xlsx')
+        df.to_excel(self.issue_file, index=False)
+        print('Dados salvos em chamados_details.xlsx')
 
     def close_session(self):
         """Encerra o processamento"""
