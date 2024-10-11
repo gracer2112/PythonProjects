@@ -1,8 +1,8 @@
 {
   "email": "erica.araujo",
   "password": "Afterimage@3",
-  "startdate": "01/09/2024",
-  "enddate": "30/09/2024",
+  "startdate": "01/10/2024",
+  "enddate": "31/10/2024",
   "driver_path": "C:/Users/erica.araujo/OneDrive - 200DEV/Documentos/PythonProjects/chromedriver_win32",
   "issue_file": "C:/Users/erica.araujo/OneDrive - 200DEV/Documentos/PythonProjects/chamados_details.xlsx"
 }

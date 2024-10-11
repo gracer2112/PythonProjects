@@ -87,6 +87,9 @@ class EasySearch:
 
         while attempt < max_attempts:
             try:
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_all_elements_located((By.XPATH, "//tbody[@id='DTConsulta_data']/tr")))
+                   
                 rows = self.driver.find_elements(By.XPATH, "//tbody[@id='DTConsulta_data']/tr")
                 time.sleep(1)
                 print("Extraindo dados", end="")
