@@ -60,6 +60,41 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Superintendências selecionadas:", Array.from(newSuperIds));
   };
 
+  // Função para verificar o estado dos checkboxes em cada projeto
+  function checkProjectCheckboxesState() {
+    const projectCards = document.querySelectorAll(".project-card");
+
+    projectCards.forEach((card, index) => {
+      const checkbox = card.querySelector(".toggle-completed");
+      if (checkbox) {
+        if (checkbox.checked) {
+          console.log(`Checkbox for project ${index} is checked.`);
+        } else {
+          console.log(`Checkbox for project ${index} is not checked.`);
+        }
+      }
+    });
+  }
+
+  // Verificar o estado inicial do checkbox
+  checkProjectCheckboxesState();
+
+  // Adicionar um evento para verificar o estado sempre que qualquer checkbox mudar
+  const checkboxes = document.querySelectorAll(".toggle-completed");
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", checkProjectCheckboxesState);
+  });
+
+  function redirectToUpdate(projetoId) {
+    const checkbox = document.getElementById(`show-completed-${projetoId}`);
+    const showCompleted = checkbox.checked ? "on" : "off";
+    const url =
+      `{{ url_for('main.update', projeto_id='PROJETO_ID', show_completed='SHOW_COMPLETED') }}`
+        .replace("PROJETO_ID", projetoId)
+        .replace("SHOW_COMPLETED", showCompleted);
+    window.location.href = url;
+  }
+
   // Adicionar event listeners aos botões e formulário
   adicionarListeners();
 

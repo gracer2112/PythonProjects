@@ -330,9 +330,18 @@ def update(projeto_id):
 
         db.session.commit()
         flash("Projeto atualizado com sucesso!")
+        # Redirecionar para a index mantendo o estado do checkbox
+        show_completed = 'on' if request.form.get('show_completed') else 'off'
         return redirect(url_for('main.view_report', projeto_id=projeto.id))
+    
+    # Verificar se o checkbox para mostrar tarefas concluídas foi marcado
+    show_completed = request.args.get('show_completed', 'off') == 'on'
 
-    tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).order_by(Tarefa.data_inicio).all()
+    if show_completed:
+        tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).order_by(Tarefa.data_inicio).all()
+    else:
+        tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).filter(Tarefa.status != 'Concluída').order_by(Tarefa.data_inicio).all()
+
     problemas = Problema.query.filter_by(projeto_id=projeto.id).all()
     superintendencias = Superintendentes.query.all()
     funcionarios = Funcionarios.query.filter(Funcionarios.tipo_funcionario=='GEN').order_by(Funcionarios.nome).all()
@@ -365,7 +374,8 @@ def update(projeto_id):
                            funcionarios_ti=funcionarios_ti,
                            superintendencias_ids=superintendencias_ids, 
                            key_users_ids=key_users_ids,
-                           funcionarios_ti_ids=funcionarios_ti_ids)
+                           funcionarios_ti_ids=funcionarios_ti_ids,
+                            show_completed=show_completed)
 
 @bp.route('/check_jira/<int:projeto_id>')
 def check_jira(projeto_id):
