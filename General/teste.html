@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layout Simulado 16:9 com Boxes e Imagem de Seta</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .pdf-container {
+        width: 100%;
+        max-width: 960px; /* Largura máxima para manter a proporção 16:9 */
+        height: 540px; /* Altura correspondente para 16:9 */
+        margin: 20px auto;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+        border-radius: 10px; /* Cantos arredondados para o container principal */
+      }
+      .header {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .header-box {
+        background-color: #eaeaea;
+        padding: 10px;
+        flex: 1;
+        text-align: center;
+        border: 1px solid #b2bec3;
+        border-radius: 10px; /* Cantos arredondados para os boxes do cabeçalho */
+      }
+      .content {
+        height: calc(100% - 80px);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .box {
+        background-color: #dfe6e9;
+        border: 1px solid #b2bec3;
+        padding: 10px;
+        flex: 1 1 calc(20% - 20px); /* Ajusta para cinco boxes por linha */
+        box-sizing: border-box;
+        min-width: 100px;
+        border-radius: 10px; /* Cantos arredondados para os boxes de conteúdo */
+      }
+      .box-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        flex: 1 1 calc(20% - 20px); /* Espaço original do Box 1 */
+      }
+      .small-box {
+        background-color: #b2bec3;
+        border: 1px solid #636e72;
+        padding: 5px;
+        flex: 1 1 calc(50% - 10px); /* Dois boxes por linha dentro do Box 1 */
+        box-sizing: border-box;
+        min-width: 45px;
+        border-radius: 10px; /* Cantos arredondados para os sub-boxes */
+      }
+      .arrow {
+        flex: 1 1 calc(60% - 20px); /* Ocupa o espaço de três boxes */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        border: 1px solid #b2bec3;
+        background-color: #dfe6e9;
+      }
+      .arrow img {
+        max-width: 100%;
+        max-height: 100%;
+        width: 100px; /* Largura fixa da imagem */
+        height: auto; /* Altura ajustada automaticamente */
+        border-radius: 10px; /* Cantos arredondados para a imagem */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pdf-container">
+      <div class="header">
+        <div class="header-box">Box Cabeçalho 1</div>
+        <div class="header-box">Box Cabeçalho 2</div>
+        <div class="header-box">Box Cabeçalho 3</div>
+        <div class="header-box">Box Cabeçalho 4</div>
+      </div>
+      <div class="content">
+        <div class="box-group">
+          <div class="small-box">Sub-box 1</div>
+          <div class="small-box">Sub-box 2</div>
+          <div class="small-box">Sub-box 3</div>
+          <div class="small-box">Sub-box 4</div>
+        </div>
+        <div class="box">Box 2</div>
+        <div class="arrow">
+          <img
+            src="C:/Users/erica.araujo/Downloads/—Pngtree—red dotted right arrow 3d_8382694.png"
+            alt="Seta para a direita"
+          />
+        </div>
+        <div class="box">Box 6</div>
+        <div class="box">Box 7</div>
+        <!-- Adicione mais boxes conforme necessário -->
+      </div>
+    </div>
+  </body>
+</html>

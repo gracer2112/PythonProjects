@@ -88,10 +88,14 @@ class GerenciadorChamados:
 
         time.sleep(2)  # Aguarda 2 segundos para garantir que a página esteja completamente carregada
 
-        self._extrair_dados_elemento(chamado, "data_categorizacao", ["j_idt286", "j_idt287", "j_idt288"])
-        self._extrair_dados_elemento(chamado, "data_aceite", ["j_idt294", "j_idt298","j_idt296", "j_idt299"])
-        self._extrair_dados_elemento(chamado, "tempo_categorizacao", ["j_idt305", "j_idt306", "j_idt307"])
-        self._extrair_dados_elemento(chamado, "tempo_atendimento", ["j_idt311", "j_idt312", "j_idt313"])
+        # self._extrair_dados_elemento(chamado, "data_categorizacao", ["j_idt286", "j_idt287", "j_idt288", "j_idt329"])
+        # self._extrair_dados_elemento(chamado, "data_aceite", ["j_idt294", "j_idt298","j_idt296", "j_idt299", "j_idt337"])
+        # self._extrair_dados_elemento(chamado, "tempo_categorizacao", ["j_idt305", "j_idt306", "j_idt307", "j_idt348"])
+        # self._extrair_dados_elemento(chamado, "tempo_atendimento", ["j_idt311", "j_idt312", "j_idt313", "j_idt355"])
+        self._extrair_dados_elemento(chamado, "data_categorizacao", [ "j_idt329"])
+        self._extrair_dados_elemento(chamado, "data_aceite", [ "j_idt337"])
+        self._extrair_dados_elemento(chamado, "tempo_categorizacao", [ "j_idt348"])
+        self._extrair_dados_elemento(chamado, "tempo_atendimento", [ "j_idt355"])
 
         atuacoes = self._tentar_encontrar_elementos(By.CSS_SELECTOR, "div.ui-accordion-header.ui-helper-reset.ui-state-default.ui-corner-all")
         for atuacao in atuacoes:
@@ -157,6 +161,9 @@ class GerenciadorChamados:
     
     def _salvar_ocorrencias(self, arquivo_saida):
         def extrair_data_e_hora(data_categorizacao):
+            if data_categorizacao is None:
+                return None  # Ou qualquer valor padrão que faça sentido no seu contexto
+            
             match = re.search(r'(\d{2}/\d{2}/\d{2}) (\d{2}:\d{2})', data_categorizacao)
             if match:
                 return match.group(0)  # Retorna a data e hora juntos
