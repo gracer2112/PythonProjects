@@ -1,77 +1,42 @@
-import turtle
+# app.py
+# from flask import Flask, send_file, render_template
+from PIL import Image, ImageDraw, ImageFont
 
-# Configuração da tela
-screen = turtle.Screen()
-screen.title("Desenhando Meios Círculos Conectados com Texto")
+# app = Flask(__name__)
 
-# Criação do objeto turtle
-t = turtle.Turtle()
-t.pensize(5)  # Define a espessura da linha para 5 unidades
+def gerar_imagem():
+    # Criar uma imagem branca
+    largura, altura = 600, 600
+    imagem = Image.new("RGB", (largura, altura), "white")
+    draw = ImageDraw.Draw(imagem)
 
-# Lista de textos para cada meio círculo
-texts = ["Diagnóstico", "Planejamento", "Análise", "Realização", "Preparação", "Go-live"]
+    # Definir cores e textos
+    texts = ["Diagnóstico", "Planejamento", "Análise", "Realização", "Preparação", "Go-live"]
+    colors = ["red", "blue", "green", "orange", "purple", "black"]
+    font = ImageFont.truetype("arial.ttf", 20)
 
-# Lista de cores para alternar
-colors = ["red", "blue", "green", "orange","purple","black"]
+    # Desenhar meio círculos e textos
+    raio = 50
+    for i, (text, color) in enumerate(zip(texts, colors)):
+        x = 100 + i * 80
+        y = 100 if i % 2 == 0 else 200
+        draw.arc([x, y, x + 2 * raio, y + raio], 0, 180, fill=color, width=5)
+        draw.text((x + raio, y + 20), text, fill=color, font=font, anchor="mm")
 
-# Função para desenhar um meio círculo e escrever texto
-def desenhar_meio_circulo(cor, texto, direcao, frente, recuo):
-    t.pencolor(cor)
-    t.setheading(direcao)
-    t.circle(50, 180)
-    t.penup()
-    t.setheading(0)
-    t.forward(frente)
+    # Desenhar círculo maior
+    draw.ellipse([200, 300, 400, 500], outline="black", width=3)
 
-    # Destacar fundo da fase "Preparação"
-    # if texto == "Preparação":
-    #     t.fillcolor("lightgray")  # Cor de fundo para destaque
-    #     t.begin_fill()
-    #     t.setheading(90)
-    #     t.forward(10)  # Ajusta posição para desenhar o retângulo
-    #     t.setheading(180)
-    #     t.forward(50)
-    #     t.setheading(0)
-    #     t.forward(100)
-    #     t.setheading(-90)
-    #     t.forward(20)
-    #     t.setheading(180)
-    #     t.forward(100)
-    #     t.setheading(90)
-    #     t.forward(10)
-    #     t.end_fill()
-    #     t.setheading(0)
-    #     t.backward(50)  # Retorna à posição central para o texto
+    # Salvar a imagem
+    imagem.save("turtle_output.png")
 
-    t.write(texto, align="center", font=("Arial", 10, "normal"))
-    t.backward(recuo)
-    t.pendown()
+# @app.route('/')
+# def index():
+gerar_imagem()
+#     return render_template('index.html')
 
-# Mover a tartaruga para a posição inicial mais à esquerda
-t.penup()
-t.goto(-200, 0)
-t.pendown()
+# @app.route('/image')
+# def get_image():
+#     return send_file('static/turtle_output.png', mimetype='image/png')
 
-# Desenhar e escrever texto para cada meio círculo
-for i in range(3):
-    # Desenhar meio círculo para cima
-    desenhar_meio_circulo(colors[2 * i % len(colors)], texts[2 * i], 90,50,50)
-    
-    # Mover a tartaruga para a posição inicial do próximo meio círculo
-    t.penup()
-    t.goto(t.xcor() + 100, t.ycor())
-    t.pendown()
-
-    # Desenhar meio círculo para baixo
-    desenhar_meio_circulo(colors[(2 * i + 1) % len(colors)], texts[2 * i + 1], -90,-50,-50)
-    
-    # Preparar para o próximo par de meios círculos
-    t.penup()
-    t.goto(t.xcor() + 100, t.ycor())
-    t.pendown()
-
-# Ocultar a tartaruga
-t.hideturtle()
-
-# Finalizar
-turtle.done()
+# if __name__ == '__main__':
+#     app.run(debug=True)

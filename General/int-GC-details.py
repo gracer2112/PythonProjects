@@ -92,10 +92,10 @@ class GerenciadorChamados:
         # self._extrair_dados_elemento(chamado, "data_aceite", ["j_idt294", "j_idt298","j_idt296", "j_idt299", "j_idt337"])
         # self._extrair_dados_elemento(chamado, "tempo_categorizacao", ["j_idt305", "j_idt306", "j_idt307", "j_idt348"])
         # self._extrair_dados_elemento(chamado, "tempo_atendimento", ["j_idt311", "j_idt312", "j_idt313", "j_idt355"])
-        self._extrair_dados_elemento(chamado, "data_categorizacao", [ "j_idt329"])
-        self._extrair_dados_elemento(chamado, "data_aceite", [ "j_idt337"])
-        self._extrair_dados_elemento(chamado, "tempo_categorizacao", [ "j_idt348"])
-        self._extrair_dados_elemento(chamado, "tempo_atendimento", [ "j_idt355"])
+        self._extrair_dados_elemento(chamado, "data_categorizacao", ["//div[contains(text(), 'Data categorização')]/following-sibling::div//label"])
+        self._extrair_dados_elemento(chamado, "data_aceite", [ "//div[contains(text(), 'Resolução (Aceite / Fechamento)')]/following-sibling::div//label"])
+        self._extrair_dados_elemento(chamado, "tempo_categorizacao", [ "//div[contains(text(), 'Tempo categorização')]/following-sibling::div//label"])
+        self._extrair_dados_elemento(chamado, "tempo_atendimento", [ "//div[contains(text(), 'Tempo atendimento')]/following-sibling::div//label"])
 
         atuacoes = self._tentar_encontrar_elementos(By.CSS_SELECTOR, "div.ui-accordion-header.ui-helper-reset.ui-state-default.ui-corner-all")
         for atuacao in atuacoes:
@@ -107,7 +107,7 @@ class GerenciadorChamados:
     def _extrair_dados_elemento(self, chamado, atributo, ids):
         for id_elemento in ids:
             try:
-                setattr(chamado, atributo, self.driver.find_element(By.ID, id_elemento).text)
+                setattr(chamado, atributo, self.driver.find_element(By.XPATH, id_elemento).text)
                 break
             except NoSuchElementException:
                 time.sleep(1)
