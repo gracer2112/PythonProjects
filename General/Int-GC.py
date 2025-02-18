@@ -119,14 +119,14 @@ class EasySearch:
     def count_pages(self, expected_columns):
         """Conta o número de páginas e extrai dados de cada uma"""
         global df
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located((By.NAME,  "DTConsulta_rppDD")))
+
         try:
-#            select_filter = self.driver.find_element(By.ID, "DTConsulta:j_id33")
             select_filter = self.driver.find_element(By.NAME, "DTConsulta_rppDD")
             time.sleep(3)
-            #select_filter = self.driver.find_element(By.ID, "DTConsulta")
         except NoSuchElementException:
             print("Elemento DTConsulta:j_id33 não encontrado. Tentando DTConsulta:j_id64.")
-#            select_filter = self.driver.find_element(By.ID, "DTConsulta:j_id64")
             time.sleep(3)
 
         select = Select(select_filter)
