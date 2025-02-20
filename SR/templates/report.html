@@ -50,26 +50,30 @@
                         <th>Tarefa</th>
                         <th>Responsável</th>
                         <th>Status</th>
-                        <th>Data de Início</th>
-                        <th>Data de Término</th>
+                        <th>Data de Início Planejada</th>
+                        <th>Data de Término Planejada</th>
+                        <th>Data de Início Realizada</th>
+                        <th>Data de Término Realizada</th>
                         <th>Observações</th>
                     </tr>
-                    {% for tarefa in tarefas %}
+                    {% for item in tarefas %}
                     <tr class="
-                        {% if tarefa.status == 'Prazo Vencido' %}
+                        {% if item.tarefa.status == 'Prazo Vencido' %}
                             red
-                        {% elif tarefa.status == 'Em Replanejamento' %}
+                        {% elif item.tarefa.status == 'Em Replanejamento' %}
                             yellow
-                        {% elif tarefa.status == 'Replanejada' %}
+                        {% elif item.tarefa.status == 'Replanejada' %}
                             green
                         {% endif %}
                     ">
-                        <td>{{ tarefa.tarefa }}</td>
-                        <td>{{ tarefa.responsavel }}</td>
-                        <td>{{ tarefa.status }}</td>
-                        <td>{{ tarefa.data_inicio.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ tarefa.data_termino.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ tarefa.observacoes }}</td>
+                        <td>{{ item.tarefa.tarefa }}</td>
+                        <td>{{ item.tarefa.responsavel }}</td>
+                        <td>{{ item.tarefa.status }}</td>
+                        <td>{{ item.tarefa.data_inicio.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ item.tarefa.data_termino.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ item.data_entrega_inicio.strftime('%Y-%m-%d')  if item.data_entrega_inicio else ''}}</td>
+                        <td>{{ item.data_entrega_fim.strftime('%Y-%m-%d') if item.data_entrega_fim else '' }}</td>
+                        <td>{{ item.tarefa.observacoes }}</td>
                     </tr>
                     {% endfor %}
                 </table>

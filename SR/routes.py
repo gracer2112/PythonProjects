@@ -5,7 +5,7 @@
 # routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, make_response, send_file
 from extensions import db
-from models import db, Projeto, Tarefa, Problema, ProjetoSuperintendencia, ProjetoKeyUser, Superintendentes, Funcionarios, ProjetoFuncTI
+from models import db, Projeto, Tarefa, EntregaTarefa, Problema, ProjetoSuperintendencia, ProjetoKeyUser, Superintendentes, Funcionarios, ProjetoFuncTI
 from datetime import datetime
 from utils import calcular_dias_uteis, get_headers, generate_excel, generate_pdf_report, upload_pdf_to_jira, check_jira_issue
 
@@ -54,6 +54,8 @@ def submit():
     status_tarefas = request.form.getlist('status_tarefas[]')
     datas_inicio = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_inicio[]')]
     datas_termino = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_termino[]')]
+    datas_entrega_inicio = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_entrega_inicio[]')]
+    datas_entrega_fim = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_entrega_fim[]')]
     observacoes = request.form.getlist('observacoes[]')
 
 
@@ -118,7 +120,7 @@ def submit():
             )
             db.session.add(projeto_key_user)
 
-    # Adicionar tarefas ao projeto
+    # Adicionar tarefas e entregas ao projeto
     for i in range(len(tarefas)):
         nova_tarefa = Tarefa(
             projeto_id=novo_projeto.id,
@@ -130,6 +132,19 @@ def submit():
             observacoes=observacoes[i]
         )
         db.session.add(nova_tarefa)
+        db.session.flush()  # Necessário para obter o id da tarefa
+
+        # Tratar as datas de entrega
+        #data_entrega_inicio = datetime.strptime(datas_entrega_inicio[i], '%Y-%m-%d') if datas_entrega_inicio[i] else None
+        #data_entrega_fim = datetime.strptime(datas_entrega_fim[i], '%Y-%m-%d') if datas_entrega_fim[i] else None
+
+        if datas_entrega_inicio[i] or datas_entrega_fim[i]:
+            nova_entrega = EntregaTarefa(
+                tarefa_id=nova_tarefa.id,
+                data_entrega_inicio=datas_entrega_inicio[i],
+                data_entrega_fim=datas_entrega_fim[i]
+            )
+            db.session.add(nova_entrega)
 
     # Adicionar problemas ao projeto
     for i in range(len(tipos)):
@@ -162,11 +177,38 @@ def view_report(projeto_id):
     tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).order_by(Tarefa.data_inicio).all()
     tarefas_filtradas = []
     for tarefa in tarefas:
+        entrega = EntregaTarefa.query.filter_by(tarefa_id=tarefa.id).order_by(EntregaTarefa.id.desc()).first()
+        
+        data_entrega_inicio = entrega.data_entrega_inicio if entrega else None
+        data_entrega_fim = entrega.data_entrega_fim if entrega else None
+            
         if tarefa.status.lower() == 'concluída':
             if tarefa.data_termino.month == datetime.now().month and tarefa.data_termino.year == datetime.now().year:
-                tarefas_filtradas.append(tarefa)
+                tarefas_filtradas.append({
+                    'tarefa': tarefa,
+                    'data_entrega_inicio': data_entrega_inicio if entrega else None,
+                    'data_entrega_fim': data_entrega_fim if entrega else None
+                    })
         else:
-            tarefas_filtradas.append(tarefa)
+            # Outras condições para tarefas não concluídas
+            if tarefa.status.lower() in ['planejada', 'replanejada', 'prazo vencido']:
+                data_entrega_inicio = None
+                data_entrega_fim = None
+            elif tarefa.status == 'Em Andamento':
+                current_start_date = data_entrega_inicio
+                if entrega:
+                    if entrega.data_entrega_inicio and current_start_date != entrega.data_entrega_inicio:
+                        data_entrega_inicio = entrega.data_entrega_inicio
+                    else:
+                        data_entrega_inicio = None
+                data_entrega_fim = None
+
+            tarefas_filtradas.append({
+                'tarefa': tarefa,
+                'data_entrega_inicio': data_entrega_inicio,
+                'data_entrega_fim': data_entrega_fim
+            })
+
 
     # Filtrar e ordenar problemas
     problemas = Problema.query.filter_by(projeto_id=projeto.id).all()
@@ -235,6 +277,8 @@ def update(projeto_id):
         status_tarefas = request.form.getlist('status_tarefas[]')
         datas_inicio = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_inicio[]')]
         datas_termino = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_termino[]')]
+        datas_entrega_inicio = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_entrega_inicio[]')]
+        datas_entrega_fim = [datetime.strptime(date, '%Y-%m-%d') for date in request.form.getlist('datas_entrega_fim[]')]
         observacoes = request.form.getlist('observacoes[]')
 
         # Verificar se pelo menos uma tarefa foi informada
@@ -253,7 +297,15 @@ def update(projeto_id):
                 observacoes=observacoes[i]
             )
             db.session.add(nova_tarefa)
+            db.session.flush()  # Necessário para obter o id da tarefa novamente
 
+            nova_entrega = EntregaTarefa(
+                tarefa_id=nova_tarefa.id,
+                data_entrega_inicio=datas_entrega_inicio[i],
+                data_entrega_fim=datas_entrega_fim[i]
+            )
+            db.session.add(nova_entrega)
+                
         # Atualizar problemas
         Problema.query.filter_by(projeto_id=projeto.id).delete()
         tipos = request.form.getlist('tipos[]')
@@ -342,6 +394,15 @@ def update(projeto_id):
     else:
         tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).filter(Tarefa.status != 'Concluída').order_by(Tarefa.data_inicio).all()
 
+    # Preparar tarefas e entregas
+    tarefas_e_entregas = []
+    for tarefa in tarefas:
+        entrega = EntregaTarefa.query.filter_by(tarefa_id=tarefa.id).order_by(EntregaTarefa.id.desc()).first()
+        tarefas_e_entregas.append({
+            'tarefa': tarefa,
+            'entrega_tarefa': entrega
+        })
+
     problemas = Problema.query.filter_by(projeto_id=projeto.id).all()
     superintendencias = Superintendentes.query.all()
     funcionarios = Funcionarios.query.filter(Funcionarios.tipo_funcionario=='GEN').order_by(Funcionarios.nome).all()
@@ -367,7 +428,7 @@ def update(projeto_id):
 
     return render_template('update.html', 
                            projeto=projeto, 
-                           tarefas=tarefas, 
+                           tarefas_e_entregas=tarefas_e_entregas, 
                            problemas=problemas, 
                            superintendencias=superintendencias, 
                            funcionarios=funcionarios, 
@@ -375,7 +436,7 @@ def update(projeto_id):
                            superintendencias_ids=superintendencias_ids, 
                            key_users_ids=key_users_ids,
                            funcionarios_ti_ids=funcionarios_ti_ids,
-                            show_completed=show_completed)
+                           show_completed=show_completed)
 
 @bp.route('/check_jira/<int:projeto_id>')
 def check_jira(projeto_id):

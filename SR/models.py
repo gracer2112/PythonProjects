@@ -1,6 +1,6 @@
-from datetime import datetime
 from extensions import db
-
+import pytz
+from datetime import datetime
 
 class Projeto(db.Model):
     __tablename__ = 'projeto'
@@ -40,8 +40,22 @@ class Tarefa(db.Model):
     data_inicio = db.Column(db.Date, nullable=False)
     data_termino = db.Column(db.Date, nullable=False)
     observacoes = db.Column(db.String(200), nullable=False)
+
+    entregas = db.relationship('EntregaTarefa', backref='tarefa', lazy=True)
+
     def __repr__(self):
         return f'<Tarefa {self.id}>'
+    
+class EntregaTarefa(db.Model):
+    __tablename__ = 'entrega_tarefa'
+    id = db.Column(db.Integer, primary_key=True)
+    tarefa_id = db.Column(db.Integer, db.ForeignKey('tarefa.id'), nullable=False)
+    data_entrega_inicio = db.Column(db.Date, nullable=False)
+    data_entrega_fim = db.Column(db.Date, nullable=False)
+    last_updated = db.Column(db.DateTime, default=datetime.now(tz=pytz.utc), onupdate=datetime.now(tz=pytz.utc)) 
+
+    def __repr__(self):
+        return f'<EntregaTarefa {self.id}>'
 
 class Problema(db.Model):
     __tablename__ = 'problema'

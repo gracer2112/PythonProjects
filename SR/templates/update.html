@@ -86,27 +86,37 @@
                             <th>Tarefa</th>
                             <th>Responsável</th>
                             <th>Status</th>
-                            <th>Data de Início</th>
-                            <th>Data de Término</th>
+                            <th>Data de Início Planejada</th>
+                            <th>Data de Término Planejada</th>
+                            <th>Data de Início Realizada</th>
+                            <th>Data de Término Realizada</th>
                             <th>Observações</th>
                         </tr>
-                        {% for tarefa in tarefas %}
+                        {% for item in tarefas_e_entregas %}
                         <tr>
-                            <td><input type="text" name="tarefas[]" value="{{ tarefa.tarefa }}" required></td>
-                            <td><input type="text" name="responsaveis[]" value="{{ tarefa.responsavel }}" required></td>
+                            <td><input type="text" name="tarefas[]" value="{{ item.tarefa.tarefa }}" required></td>
+                            <td><input type="text" name="responsaveis[]" value="{{ item.tarefa.responsavel }}" required></td>
                             <td>
                                 <select name="status_tarefas[]" required>
-                                    <option value="Concluída" {% if tarefa.status == 'Concluída' %}selected{% endif %}>Concluída</option>
-                                    <option value="Replanejada" {% if tarefa.status == 'Replanejada' %}selected{% endif %}>Replanejada</option>
-                                    <option value="Planejada" {% if tarefa.status == 'Planejada' %}selected{% endif %}>Planejada</option>
-                                    <option value="Em Andamento" {% if tarefa.status == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
-                                    <option value="Prazo Vencido" {% if tarefa.status == 'Prazo Vencido' %}selected{% endif %}>Prazo Vencido</option>
-                                    <option value="Em Replanejamento" {% if tarefa.status == 'Em Replanejamento' %}selected{% endif %}>Em Replanejamento</option>
+                                    <option value="Concluída" {% if item.tarefa.status == 'Concluída' %}selected{% endif %}>Concluída</option>
+                                    <option value="Replanejada" {% if item.tarefa.status == 'Replanejada' %}selected{% endif %}>Replanejada</option>
+                                    <option value="Planejada" {% if item.tarefa.status == 'Planejada' %}selected{% endif %}>Planejada</option>
+                                    <option value="Em Andamento" {% if item.tarefa.status == 'Em Andamento' %}selected{% endif %}>Em Andamento</option>
+                                    <option value="Prazo Vencido" {% if item.tarefa.status == 'Prazo Vencido' %}selected{% endif %}>Prazo Vencido</option>
+                                    <option value="Em Replanejamento" {% if item.tarefa.status == 'Em Replanejamento' %}selected{% endif %}>Em Replanejamento</option>
                                 </select>
                             </td>
-                            <td><input type="date" name="datas_inicio[]" value="{{ tarefa.data_inicio.strftime('%Y-%m-%d') }}" required></td>
-                            <td><input type="date" name="datas_termino[]" value="{{ tarefa.data_termino.strftime('%Y-%m-%d') }}" required></td>
-                            <td><input type="text" name="observacoes[]" value="{{ tarefa.observacoes }}" required></td>
+                            <td><input type="date" name="datas_inicio[]" value="{{ item.tarefa.data_inicio.strftime('%Y-%m-%d') }}" required></td>
+                            <td><input type="date" name="datas_termino[]" value="{{ item.tarefa.data_termino.strftime('%Y-%m-%d') }}" required></td>
+                            <td><input type="date" name="datas_entrega_inicio[]"
+                            value="{{ item.entrega_tarefa.data_entrega_inicio.strftime('%Y-%m-%d') if item.entrega_tarefa else '' }}" 
+                            {% if item.entrega_tarefa %}required{% endif %}>  </td>
+                            <td>
+                                <input type="date" name="datas_entrega_fim[]"
+                                       value="{{ item.entrega_tarefa.data_entrega_fim.strftime('%Y-%m-%d') if item.entrega_tarefa else '' }}" 
+                                       {% if item.entrega_tarefa %}required{% endif %}>
+                            </td>
+                            <td><input type="text" name="observacoes[]" value="{{ item.tarefa.observacoes }}" required></td>
                             <td><button type="button" onclick="removeTask(this)">Remover</button></td>
                         </tr>
                         {% endfor %}

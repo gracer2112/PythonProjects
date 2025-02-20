@@ -157,6 +157,8 @@ function addTask() {
     </td>
     <td><input type="date" name="datas_inicio[]" required></td>
     <td><input type="date" name="datas_termino[]" required></td>
+    <td><input type="date" name="datas_entrega_inicio[]" required></td>
+    <td><input type="date" name="datas_entrega_fim[]" required></td>
     <td><input type="text" name="observacoes[]" required></td>
     <td><button type="button" onclick="removeTask(this)">Remover</button></td>
   `;

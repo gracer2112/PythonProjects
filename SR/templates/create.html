@@ -140,8 +140,10 @@
                 <th>Tarefa</th>
                 <th>Responsável</th>
                 <th>Status</th>
-                <th>Data de Início</th>
-                <th>Data de Término</th>
+                <th>Data de Início Planejada</th>
+                <th>Data de Término Planejada</th>
+                <th>Data de Início Realizada</th>
+                <th>Data de Término Realizada</th>
                 <th>Observações</th>
               </tr>
               <tr>
@@ -159,6 +161,12 @@
                 </td>
                 <td><input type="date" name="datas_inicio[]" required /></td>
                 <td><input type="date" name="datas_termino[]" required /></td>
+                <td>
+                  <input type="date" name="datas_entrega_inicio[]" required />
+                </td>
+                <td>
+                  <input type="date" name="datas_entrega_fim[]" required />
+                </td>
                 <td><input type="text" name="observacoes[]" required /></td>
               </tr>
             </table>

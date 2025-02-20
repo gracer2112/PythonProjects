@@ -1,7 +1,7 @@
 from flask import Flask,Blueprint
 import os
 from extensions import db
-from models import db, Projeto, Tarefa, Problema
+from models import db, Projeto, Tarefa, Problema, EntregaTarefa
 from config import Config
 
 def create_app():

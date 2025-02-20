@@ -8,7 +8,7 @@ import requests
 from flask import flash, render_template, request, url_for, make_response, send_file, redirect
 from weasyprint import HTML, CSS
 import pandas as pd
-from models import db, Projeto, Tarefa, Problema, ProjetoSuperintendencia, ProjetoKeyUser, Superintendentes, Funcionarios, ProjetoFuncTI
+from models import db, Projeto, Tarefa, EntregaTarefa, Problema, ProjetoSuperintendencia, ProjetoKeyUser, Superintendentes, Funcionarios, ProjetoFuncTI
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 JIRA_INSTALLATION = "timetiintegrada.atlassian.net"
@@ -134,11 +134,38 @@ def generate_pdf_report(projeto_id):
     tarefas = Tarefa.query.filter_by(projeto_id=projeto.id).order_by(Tarefa.data_inicio).all()
     tarefas_filtradas = []
     for tarefa in tarefas:
+        entrega = EntregaTarefa.query.filter_by(tarefa_id=tarefa.id).order_by(EntregaTarefa.id.desc()).first()
+        
+        data_entrega_inicio = entrega.data_entrega_inicio if entrega else None
+        data_entrega_fim = entrega.data_entrega_fim if entrega else None
+
         if tarefa.status.lower() == 'concluída':
             if tarefa.data_termino.month == datetime.now().month and tarefa.data_termino.year == datetime.now().year:
-                tarefas_filtradas.append(tarefa)
+                tarefas_filtradas.append({
+                    'tarefa': tarefa,
+                    'data_entrega_inicio': data_entrega_inicio if entrega else None,
+                    'data_entrega_fim': data_entrega_fim if entrega else None
+                    })
         else:
-            tarefas_filtradas.append(tarefa)
+            # Outras condições para tarefas não concluídas
+            if tarefa.status.lower() in ['planejada', 'replanejada', 'prazo vencido']:
+                data_entrega_inicio = None
+                data_entrega_fim = None
+            elif tarefa.status == 'Em Andamento':
+                current_start_date = data_entrega_inicio
+                if entrega:
+                    if entrega.data_entrega_inicio and current_start_date != entrega.data_entrega_inicio:
+                        data_entrega_inicio = entrega.data_entrega_inicio
+                    else:
+                        data_entrega_inicio = None
+                data_entrega_fim = None
+
+            tarefas_filtradas.append({
+                'tarefa': tarefa,
+                'data_entrega_inicio': data_entrega_inicio,
+                'data_entrega_fim': data_entrega_fim
+            })
+
 
     # Filtrar e ordenar problemas
     problemas = Problema.query.filter_by(projeto_id=projeto.id).all()
