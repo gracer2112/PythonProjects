@@ -62,8 +62,8 @@ def generate_excel(projeto, tarefas, problemas):
         'Tarefa': [tarefa.tarefa for tarefa in tarefas],
         'Responsável': [tarefa.responsavel for tarefa in tarefas],
         'Status': [tarefa.status for tarefa in tarefas],
-        'Data de Início': [tarefa.data_inicio for tarefa in tarefas],
-        'Data de Término': [tarefa.data_termino for tarefa in tarefas],
+        'Data de Início': [tarefa.data_inicio.strftime("%d-%m-%Y") for tarefa in tarefas],
+        'Data de Término': [tarefa.data_termino.strftime("%d-%m-%Y") for tarefa in tarefas],
         'Observações': [tarefa.observacoes for tarefa in tarefas]
     }
     df_tarefas = pd.DataFrame(tarefas_data)
@@ -87,7 +87,7 @@ def generate_excel(projeto, tarefas, problemas):
             'Impacto': [problema.impacto for problema in problemas],
             'Ação Corretiva': [problema.acao_corretiva for problema in problemas],
             'Agente de Solução': [problema.agente_solucao for problema in problemas],
-            'Data Alvo de Solução': [problema.data_alvo_solucao for problema in problemas],
+            'Data Alvo de Solução': [problema.data_alvo_solucao.strftime("%d-%m-%Y") for problema in problemas],
             'Coordenador do Agente de Solução': [problema.coordenador_agente_solucao for problema in problemas],
             'Status': [problema.status for problema in problemas]
         }
@@ -143,8 +143,8 @@ def generate_pdf_report(projeto_id):
             if tarefa.data_termino.month == datetime.now().month and tarefa.data_termino.year == datetime.now().year:
                 tarefas_filtradas.append({
                     'tarefa': tarefa,
-                    'data_entrega_inicio': data_entrega_inicio if entrega else None,
-                    'data_entrega_fim': data_entrega_fim if entrega else None
+                    'data_entrega_inicio': data_entrega_inicio.strftime("%d-%m-%Y") if entrega else None,
+                    'data_entrega_fim': data_entrega_fim.strftime("%d-%m-%Y") if entrega else None
                     })
         else:
             # Outras condições para tarefas não concluídas
@@ -162,8 +162,8 @@ def generate_pdf_report(projeto_id):
 
             tarefas_filtradas.append({
                 'tarefa': tarefa,
-                'data_entrega_inicio': data_entrega_inicio,
-                'data_entrega_fim': data_entrega_fim
+                'data_entrega_inicio': data_entrega_inicio.strftime("%d-%m-%Y") if data_entrega_inicio is not None else None,
+                'data_entrega_fim': data_entrega_fim.strftime("%d-%m-%Y") if data_entrega_inicio is not None else None
             })
 
 

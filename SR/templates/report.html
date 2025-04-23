@@ -69,10 +69,12 @@
                         <td>{{ item.tarefa.tarefa }}</td>
                         <td>{{ item.tarefa.responsavel }}</td>
                         <td>{{ item.tarefa.status }}</td>
-                        <td>{{ item.tarefa.data_inicio.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ item.tarefa.data_termino.strftime('%Y-%m-%d') }}</td>
-                        <td>{{ item.data_entrega_inicio.strftime('%Y-%m-%d')  if item.data_entrega_inicio else ''}}</td>
-                        <td>{{ item.data_entrega_fim.strftime('%Y-%m-%d') if item.data_entrega_fim else '' }}</td>
+                        <td>{{ item.tarefa.data_inicio.strftime('%d-%m-%Y') }}</td>
+                        <td>{{ item.tarefa.data_termino.strftime('%d-%m-%Y') }}</td>
+<!--                        <td>{{ item.data_entrega_inicio.strftime('%Y-%m-%d')  if item.data_entrega_inicio else ''}}</td> -->
+                        <td>{% if item.data_entrega_inicio %} {{ item.data_entrega_inicio.strftime('%d-%m-%Y') }} {% else %}  {% endif %}</td>
+<!--                        <td>{{ item.data_entrega_fim.strftime('%Y-%m-%d') if item.data_entrega_fim else '' }}</td> -->
+                        <td>{% if item.data_entrega_fim %} {{ item.data_entrega_fim.strftime('%d-%m-%Y') }} {% else %}  {% endif %}</td>
                         <td>{{ item.tarefa.observacoes }}</td>
                     </tr>
                     {% endfor %}
@@ -107,7 +109,7 @@
                         <td>{{ problema.impacto }}</td>
                         <td>{{ problema.acao_corretiva|safe }}</td>
                         <td>{{ problema.agente_solucao|safe }}</td>
-                        <td>{{ problema.data_alvo_solucao.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ problema.data_alvo_solucao.strftime('%d-%m-%Y') }}</td>
                         <td>{{ problema.coordenador_agente_solucao|safe }}</td>
                         <td>{{ problema.status }}</td>
                     </tr>
