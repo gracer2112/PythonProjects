@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from extensions import db
 from models import db, Projeto, Tarefa, EntregaTarefa, Problema, ProjetoSuperintendencia, ProjetoKeyUser, Superintendentes, Funcionarios, ProjetoFuncTI
 from datetime import datetime
-from utils import calcular_dias_uteis, get_headers, generate_excel, generate_pdf_report, upload_pdf_to_jira, check_jira_issue
+from utils import calcular_dias_uteis, format_date, get_headers, generate_excel, generate_pdf_report, upload_pdf_to_jira, check_jira_issue
 
 bp = Blueprint('main', __name__)
 

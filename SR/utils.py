@@ -16,7 +16,26 @@ E_MAIL = "erica.araujo@integrada.coop.br"
 API_JIRA = "ATATT3xFfGF0YdbDeAD5bm_Bh8zT2PgZbah-PPxVLRnS0Tp5ZKel0ZJ7S_vwIvJaoU7vAPcoLNjQFvsbp1ZK_0TCo_xzYYvpb87YhHItcseeZzxskelgk-8RfKgL_JVfOgw2y3ZUW55hEjTheU1dVqgM7MCtjV6l4X3sRYZuCX7XfxEGWujrfLA=E4C56923"
 KEY="TSI"
 
+from datetime import datetime
 
+def format_date(date_value, output_format="%d-%m-%Y"): 
+    if date_value is None: return None 
+    if isinstance(date_value, str): 
+        try: 
+        # Ajuste o formato se a string estiver em outro padrão, por exemplo: '%Y-%m-%d' 
+            dt = datetime.strptime(date_value, "%Y-%m-%d") 
+        except ValueError: 
+        # Se a conversão falhar, retorne a própria string ou trate o erro como desejar. 
+            return date_value 
+        else: 
+            return dt.strftime(output_format) 
+        
+    elif isinstance(date_value, datetime): 
+        return date_value.strftime(output_format) 
+    
+    else: 
+        return date_value
+    
 def calcular_dias_uteis(data_inicio, data_fim):
      dias_uteis = 0
      while data_inicio <= data_fim:
@@ -143,8 +162,8 @@ def generate_pdf_report(projeto_id):
             if tarefa.data_termino.month == datetime.now().month and tarefa.data_termino.year == datetime.now().year:
                 tarefas_filtradas.append({
                     'tarefa': tarefa,
-                    'data_entrega_inicio': data_entrega_inicio.strftime("%d-%m-%Y") if entrega else None,
-                    'data_entrega_fim': data_entrega_fim.strftime("%d-%m-%Y") if entrega else None
+                    'data_entrega_inicio': format_date(data_entrega_inicio, "%d-%m-%Y") if entrega else None,
+                    'data_entrega_fim': format_date(data_entrega_fim, "%d-%m-%Y") if entrega else None
                     })
         else:
             # Outras condições para tarefas não concluídas
@@ -162,8 +181,8 @@ def generate_pdf_report(projeto_id):
 
             tarefas_filtradas.append({
                 'tarefa': tarefa,
-                'data_entrega_inicio': data_entrega_inicio.strftime("%d-%m-%Y") if data_entrega_inicio is not None else None,
-                'data_entrega_fim': data_entrega_fim.strftime("%d-%m-%Y") if data_entrega_inicio is not None else None
+                'data_entrega_inicio': format_date(data_entrega_inicio, "%d-%m-%Y") if data_entrega_inicio is not None else None,
+                'data_entrega_fim': format_date(data_entrega_fim, "%d-%m-%Y") if data_entrega_fim is not None else None
             })
 
 
