@@ -55,6 +55,9 @@ class EasySearch:
         url = 'http://192.168.1.15:8085/GerenciadorChamados/modulos/chamados/consulta.xhtml'    
         self.driver.get(url)
 
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located((By.ID,  "j_idt215_input")))
+        
         start_filter = self.driver.find_element(By.ID, "j_idt215_input")
         start_filter.clear()
         start_filter.send_keys(self.startdate)
@@ -72,12 +75,21 @@ class EasySearch:
 
     def change_combo_value(self):
         """Altera o valor do combo box para SAF-TI-INFRA"""
-        combo_box = self.driver.find_element(By.ID, "j_idt224_label")
-        combo_box.click()
-        time.sleep(1)
-        new_value = self.driver.find_element(By.XPATH, "//li[@data-label='SAF-TI-INFRA']")
-        new_value.click()
-        time.sleep(1)
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_all_elements_located((By.ID,  "j_idt224_label")))
+            combo_box = self.driver.find_element(By.ID, "j_idt224_label")
+            combo_box.click()
+            time.sleep(1)
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_all_elements_located((By.XPATH, "//li[@data-label='SAF-TI-INFRA']")))        
+            new_value = self.driver.find_element(By.XPATH, "//li[@data-label='SAF-TI-INFRA']")
+            new_value.click()
+            time.sleep(1)
+        except (StaleElementReferenceException, NoSuchElementException, TimeoutException):
+                print(f"\nTentativa de mudança no combo falhou. Encerrando aplicação...")
+                return
+
 
     def extract_table_data(self, expected_columns):
         """Extrai dados da tabela"""
