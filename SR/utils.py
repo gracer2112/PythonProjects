@@ -13,7 +13,7 @@ from models import db, Projeto, Tarefa, EntregaTarefa, Problema, ProjetoSuperint
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 JIRA_INSTALLATION = "timetiintegrada.atlassian.net"
 E_MAIL = "erica.araujo@integrada.coop.br"
-API_JIRA = "ATATT3xFfGF0YdbDeAD5bm_Bh8zT2PgZbah-PPxVLRnS0Tp5ZKel0ZJ7S_vwIvJaoU7vAPcoLNjQFvsbp1ZK_0TCo_xzYYvpb87YhHItcseeZzxskelgk-8RfKgL_JVfOgw2y3ZUW55hEjTheU1dVqgM7MCtjV6l4X3sRYZuCX7XfxEGWujrfLA=E4C56923"
+API_JIRA = "chave-api-do-jira"
 KEY="TSI"
 
 from datetime import datetime
