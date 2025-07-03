@@ -3,6 +3,7 @@ import os
 from extensions import db
 from models import db, Projeto, Tarefa, Problema, EntregaTarefa
 from flask_migrate import Migrate
+
 from config import Config
 
 def create_app():
@@ -17,6 +18,8 @@ def create_app():
         os.makedirs(os.path.join(Config.BASE_DIR, 'instance'))
 
     db.init_app(app)
+    Migrate(app, db)   
+
 
 
     with app.app_context():
@@ -34,8 +37,9 @@ def create_app():
 # def status_report():
 #     return "Status Report Page"
 
-app = create_app() 
-Migrate(app, db)   
+
 
 if __name__ == '__main__':
+    app = create_app() 
     app.run(debug=False,  port=5003)
+    
