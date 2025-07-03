@@ -1,10 +1,11 @@
 from flask import Flask,Blueprint
 import os
 from extensions import db
-from models import db, Projeto, Tarefa, Problema, EntregaTarefa
+from models import Projeto, Tarefa, Problema, EntregaTarefa
 from flask_migrate import Migrate
 
 from config import Config
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
@@ -18,12 +19,10 @@ def create_app():
         os.makedirs(os.path.join(Config.BASE_DIR, 'instance'))
 
     db.init_app(app)
-    Migrate(app, db)   
+    migrate.init_app(app, db)   
 
-
-
-    with app.app_context():
-        db.create_all()
+    #with app.app_context():
+    #    db.create_all()
     
     from routes import bp as main_bp
     app.register_blueprint(main_bp)
